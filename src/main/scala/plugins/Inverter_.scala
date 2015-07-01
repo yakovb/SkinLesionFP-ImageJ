@@ -16,13 +16,13 @@ class Inverter_ extends PlugInFilter {
 
   override def run(ip: ImageProcessor): Unit = {
     val pixels = ip.getPixels.asInstanceOf[Array[Byte]].par
-    ip.setPixels(inv(inv(inv(pixels))).toArray)
+    ip.setPixels(invert(pixels).toArray)
   }
 
   private def showAbout(): Unit =
     IJ.showMessage("this is my scala-based inverter")
 
-  private def inv[@specialized(Byte,Int) A: Ring](ar: ParArray[A]): ParArray[A] = {
+  private def invert[@specialized(Byte,Int) A: Ring](ar: ParArray[A]): ParArray[A] = {
     ar map (255 - _)
   }
 }
