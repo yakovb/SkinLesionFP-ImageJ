@@ -10,7 +10,7 @@ import scala.collection.parallel.mutable.ParArray
 
 class Map_2 extends PlugInFilter {
   override def setup(arg: String, imp: ImagePlus): Int =
-    DOES_ALL
+    DOES_RGB + DOES_8G + NO_CHANGES
 
   override def run(ip: ImageProcessor): Unit = {
     val pixelsIn = ip.getPixels.asInstanceOf[Array[Int]].par

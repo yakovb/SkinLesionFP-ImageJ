@@ -12,7 +12,7 @@ import scala.collection.parallel.mutable.ParArray
 class Inverter_ extends PlugInFilter {
   override def setup(arg: String, imp: ImagePlus): Int =
     if (arg == "about") {showAbout(); DONE}
-    else DOES_8G + DOES_STACKS + SUPPORTS_MASKING
+    else DOES_8G + DOES_STACKS + SUPPORTS_MASKING + NO_CHANGES
 
   override def run(ip: ImageProcessor): Unit = {
     val pixels = ip.getPixels.asInstanceOf[Array[Byte]].par
