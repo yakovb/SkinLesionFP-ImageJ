@@ -1,9 +1,8 @@
-import ij.{IJ, ImagePlus}
+import ij.ImagePlus
 import ij.plugin.filter.PlugInFilter
 import ij.plugin.filter.PlugInFilter._
 import ij.process.{ByteProcessor, ImageProcessor}
 import spire.algebra.Ring
-import spire.syntax.ring._
 import spire.std.any._
 
 import scala.collection.parallel.mutable.ParArray
