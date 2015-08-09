@@ -8,7 +8,7 @@ sealed trait Image {
   val matrix: ParArray[Int]
 }
 
-case class ImageIJ(pixels: Array[Int], w: Int, h: Int) extends Image {
+case class ImageRGB(pixels: Array[Int], w: Int, h: Int) extends Image {
   override val width: Int = w
   override val height: Int = h
   override val matrix: ParArray[Int] = pixels.par
