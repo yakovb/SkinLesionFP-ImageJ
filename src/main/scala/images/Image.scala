@@ -17,9 +17,15 @@ sealed trait Image {
 }
 
 case class ImageInt(pixels: ParArray[Int], w: Int, h: Int) extends Image {
-  def this(pixels: Array[Int], w: Int, h: Int) = this(pixels.par, w, h)
-
   override val width: Int = w
   override val height: Int = h
   override val matrix: ParArray[Int] = pixels
+}
+
+object Image {
+  def makeImageInt(pixels: ParArray[Int], width: Int, height: Int) =
+    ImageInt(pixels, width, height)
+
+  def makeImageInt(pixels: Array[Int], width: Int, height: Int) =
+    ImageInt(pixels.par, width, height)
 }
