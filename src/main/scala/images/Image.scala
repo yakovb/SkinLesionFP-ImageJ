@@ -4,28 +4,21 @@ import operations.PointOperation
 
 import scala.collection.parallel.mutable.ParArray
 
-sealed trait Image {
+sealed trait Image[A] {
   val width: Int
   val height: Int
-  val matrix: ParArray[Int]
+  val matrix: ParArray[A]
 
-  def processPoints(op: PointOperation): Image = {
+  def traversePoints[B](op: PointOperation[A,B]): Image[B] = {
     val newMatrix = for (pixel <- matrix)
       yield op runOn pixel
-    ImageInt(newMatrix, width, height)
+    
+    ParImage(newMatrix, width, height)
   }
 }
 
-case class ImageInt(pixels: ParArray[Int], w: Int, h: Int) extends Image {
+case class ParImage[A](pixels: ParArray[A], w: Int, h: Int) extends Image[A] {
   override val width: Int = w
   override val height: Int = h
-  override val matrix: ParArray[Int] = pixels
-}
-
-object Image {
-  def makeImageInt(pixels: ParArray[Int], width: Int, height: Int) =
-    ImageInt(pixels, width, height)
-
-  def makeImageInt(pixels: Array[Int], width: Int, height: Int) =
-    ImageInt(pixels.par, width, height)
+  override val matrix: ParArray[A] = pixels
 }
