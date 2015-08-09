@@ -20,11 +20,5 @@ case class PointOpRGB(redOp: Int => Int, greenOp: Int => Int, blueOp: Int => Int
 }
 
 object Operation {
-  def doPointOpRGB(redOp: Int => Int, greenOp: Int => Int, blueOp: Int => Int): PointOperation = {
-    PointOpRGB(redOp, greenOp, blueOp)
-  }
 
-  def doPointOpRGB(redOp: Int => Double, greenOp: Int => Double, blueOp: Int => Double): PointOperation = {
-    PointOpRGB(redOp andThen(_.toInt), greenOp andThen(_.toInt), blueOp andThen(_.toInt))
-  }
 }
