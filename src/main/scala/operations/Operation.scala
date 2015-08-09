@@ -2,23 +2,20 @@ package operations
 
 sealed trait Operation
 
-sealed trait PointOperation extends Operation {
-  def runOn(pixel: Int): Int
+sealed trait PointOperation[-A,+B] {
+  def runOn(pixel: A): B
 }
 
-case class PointOp(f: Int => Int) extends PointOperation {
-  override def runOn(pixel: Int): Int = f(pixel)
+case class PointOp[A,B](f: A => B) extends PointOperation[A,B] {
+  override def runOn(pixel: A): B = f(pixel)
 }
 
-case class PointOpRGB(redOp: Int => Int, greenOp: Int => Int, blueOp: Int => Int) extends PointOperation {
-  override def runOn(pixel: Int): Int = {
+case class PointOpRGB[A,B](redOp: Int => A, greenOp: Int => A, blueOp: Int => A)
+                        (combine: (A,A,A) => B) extends PointOperation[Int,B] {
+  override def runOn(pixel: Int): B = {
     val red = redOp ((pixel >> 16) & 0xff)
     val green = greenOp ((pixel >> 8) & 0xff)
     val blue = blueOp (pixel & 0xff)
-    (red << 16) + (green << 8) + blue
+    combine (red, green, blue)
   }
-}
-
-object Operation {
-
 }
