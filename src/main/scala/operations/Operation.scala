@@ -2,7 +2,7 @@ package operations
 
 sealed trait Operation
 
-sealed trait PointOperation[-A,+B] {
+sealed trait PointOperation[-A,+B] extends Operation {
   def runOn(pixel: A): B
 }
 
