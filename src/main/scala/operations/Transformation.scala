@@ -10,6 +10,9 @@ case class TransformSimple[A,B](image: Image[A],
                                 traversal: PointTraverse,
                                 pointOp: PointOperation[A,B]) extends Transformation {
 
-  val newMat: ParArray[B] = traversal traverse (image, pointOp)
-  ParImage(newMat, image.width, image.height)
+  def transform: ParImage[B] = {
+    val newMat: ParArray[B] = traversal traverse (image, pointOp)
+    ParImage(newMat, image.width, image.height)
+  }
+
 }
