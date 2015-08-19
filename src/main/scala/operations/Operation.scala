@@ -19,3 +19,12 @@ case class PointOpRGB[A,B](redOp: Int => A, greenOp: Int => A, blueOp: Int => A)
     combine (red, green, blue)
   }
 }
+
+sealed trait NeighbourhoodOperation[-A,+B] extends Operation {
+  def runOn(neighbourhood: List[A]): B
+}
+
+case class NeighbourhoodOp[A,B,K](f: List[(A,K)] => B, kernel: List[K]) extends NeighbourhoodOperation[A,B] {
+  override def runOn(neighbourhood: List[A]): B =
+    f (neighbourhood zip kernel)
+}
