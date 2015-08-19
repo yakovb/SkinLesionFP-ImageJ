@@ -1,13 +1,11 @@
-package plugins
-
 import ij.ImagePlus
 import ij.plugin.filter.PlugInFilter
 import ij.plugin.filter.PlugInFilter._
-import ij.process.ImageProcessor
+import ij.process.{ByteProcessor, ImageProcessor}
 import images.ParImage
 import operations.NeighbourhoodOp
 
-class Unit_ extends PlugInFilter {
+class Identity_Filter extends PlugInFilter {
   override def setup(arg: String, imp: ImagePlus): Int =
     DOES_8G + DOES_STACKS + SUPPORTS_MASKING
 
@@ -16,9 +14,11 @@ class Unit_ extends PlugInFilter {
     val image = ParImage[Byte](pixels.par, ip.getWidth, ip.getHeight)
     val transformedImage = image.traverseNeighbourhoods[Byte](
       NeighbourhoodOp[Byte,Int,Byte](
-        (pairs: List[(Byte,Int)]) => ((pairs map (p => p._1 * p._2)).sum * (1/9)).toByte)
-        (List.fill(9)(1)
+        (pairs: List[(Byte,Int)]) => (pairs map (p => p._1 * p._2)).sum.toByte)
+        (List(0,0,0,0,1,0,0,0,0)
       )
     )
+    val result = new ByteProcessor(transformedImage.width - 1, transformedImage.height - 1, transformedImage.matrix.toArray)
+    new ImagePlus("grey pic", result) show()
   }
 }
