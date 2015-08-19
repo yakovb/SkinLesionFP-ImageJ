@@ -19,14 +19,15 @@ sealed trait Image[A] {
 
   def traverseNeighbourhoods[B](op: NeighbourhoodOperation[A,B]): Image[B] = {
     val allNeighbourhoods: immutable.IndexedSeq[immutable.IndexedSeq[A]] =
-      for {
-      row <- 1 until width
-      col <- 1 until height
+    for {
+      row <- 1 until (height-1)
+      col <- 1 until (width-1)
     } yield
       for {
         u <- -1 to 1
         v <- -1 to 1
-      } yield matrix(width * (row + u) + (col + v))
+      } yield
+        matrix(width * (row + u) + (col + v))
 
     ParImage((allNeighbourhoods map (n => op runOn n.toList)).toParArray, width-1, height-1)
   }
