@@ -1,7 +1,8 @@
 package images
 
-import operations.PointOperation
+import operations.{NeighbourhoodOperation, PointOperation}
 
+import scala.collection.immutable
 import scala.collection.parallel.mutable.ParArray
 
 sealed trait Image[A] {
@@ -14,6 +15,20 @@ sealed trait Image[A] {
       yield op runOn pixel
     
     ParImage(newMatrix, width, height)
+  }
+
+  def traverseNeighbourhoods[B](op: NeighbourhoodOperation[A,B]): Image[B] = {
+    val allNeighbourhoods: immutable.IndexedSeq[immutable.IndexedSeq[A]] =
+      for {
+      row <- 1 until width
+      col <- 1 until height
+    } yield
+      for {
+        u <- -1 to 1
+        v <- -1 to 1
+      } yield matrix(width * (row + u) + (col + v))
+
+    ParImage((allNeighbourhoods map (n => op runOn n.toList)).toParArray, width-1, height-1)
   }
 }
 
