@@ -28,15 +28,3 @@ case class NeighbourhoodOp[-A,K,+B](f: List[(A,K)] => B)(kernel: List[K]) extend
   override def runOn(neighbourhood: List[A]): B =
     f (neighbourhood zip kernel)
 }
-
-object Operation {
-
-  import shapeless._
-  object Pipeline2 extends Poly2 {
-
-    implicit def functions[A,B,C] = at[A => B, B => C](_ andThen _)
-
-  }
-
-
-}
