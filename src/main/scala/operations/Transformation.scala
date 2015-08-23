@@ -1,8 +1,6 @@
 package operations
 
-import images.{ParImage, Image}
-
-import scala.collection.parallel.mutable.ParArray
+import images.{Image, ParImage}
 
 sealed trait Transformation
 
@@ -11,7 +9,7 @@ case class TransformSimple[A,B](image: Image[A],
                                 pointOp: PointOperation[A,B]) extends Transformation {
 
   def transform: ParImage[B] = {
-    val newMat: ParArray[B] = traversal traverse (image, pointOp)
+    val newMat = traversal traverse (image, pointOp)
     ParImage(newMat, image.width, image.height)
   }
 }
@@ -20,7 +18,9 @@ case class TransformNeighbourhood[A,B](image: Image[A],
                                         traversal: NeighbourTraverse,
                                         neighbourOp: NeighbourhoodOperation[A,B]) extends Transformation {
 
-  def transform: Image[B] =
-    traversal traverse (image, neighbourOp)
+  def transform: Image[B] = {
+    val newMat = traversal traverse (image, neighbourOp)
+    ParImage(newMat, image.width, image.height)
+  }
 
 }
