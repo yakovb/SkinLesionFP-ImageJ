@@ -15,6 +15,7 @@ case class TransformSimple[A,B](image: Image[A],
   }
 }
 
+//TODO handle border cropping based on kernel size
 case class TransformNeighbourhood[A,B](image: Image[A],
                                         traversal: NeighbourTraverse,
                                         neighbourOp: NeighbourhoodOperation[A,B])

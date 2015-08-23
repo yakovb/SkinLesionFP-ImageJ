@@ -13,6 +13,7 @@ case class PointTraverse() extends Traversal {
 
 }
 
+//TODO handle traversal cropping based on kernel size
 case class NeighbourTraverse() extends Traversal {
 
   def traverse[A,B](im: Image[A], op: NeighbourhoodOperation[A,B]): ParArray[B] = {
