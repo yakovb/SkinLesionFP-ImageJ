@@ -44,7 +44,7 @@ case class Histo_1ChannelTraverse() extends Traversal {
 
 case class Histo_3ChannelTraverse() extends Traversal {
 
-  def traverse[A](im: Image[Int]): Map[String, ParMap[Int, Int]] = {
+  def traverse(im: Image[Int]): Map[String, ParMap[Int, Int]] = {
 
     def oneChannelTraverse(getPixelOp: Int => Int) =
       im.matrix groupBy (getPixelOp(_))

@@ -34,9 +34,16 @@ case class TransformNeighbourhood[A,B](image: Image[A],
 
 }
 
-case class TransformToHistogram[A](image: Image[A],
+case class TransformOneChannelToHistogram[A](image: Image[A],
                                     traversal: Histo_1ChannelTraverse) extends Transformation {
 
   def transform: ParMap[A, Int] =
+    traversal traverse image
+}
+
+case class TransformThreeChannelToHistogram(image: Image[Int],
+                                             traversal: Histo_3ChannelTraverse) extends Transformation {
+
+  def transform: Map[String, ParMap[Int, Int]] =
     traversal traverse image
 }
