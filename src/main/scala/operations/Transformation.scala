@@ -25,7 +25,7 @@ case class TransformNeighbourhood[A,B](image: Image[A],
 
     borderAction match {
       case BorderAction.NoAction => ParImage(newMat, image.width, image.height)
-      case BorderAction.Crop => ParImage(newMat, image.width - 1, image.height - 1)
+      case BorderAction.Crop => ParImage(newMat, image.width - 2, image.height - 2)
       case _ => throw new Exception("Unknown border action: " + borderAction.toString)
     }
   }
