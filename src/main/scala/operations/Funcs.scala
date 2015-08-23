@@ -24,5 +24,6 @@ object Funcs {
 
 object BorderAction extends Enumeration {
   type BorderAction = Value
+  val NoAction = Value("Leave borders unchanged")
   val Crop = Value("Crop borders by 1 pixel")
 }
