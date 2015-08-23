@@ -24,7 +24,7 @@ sealed trait NeighbourhoodOperation[-A,+B] extends Operation {
   def runOn(neighbourhood: List[A]): B
 }
 
-case class NeighbourhoodOp[-A,K,+B](f: List[(A,K)] => B)(kernel: List[K]) extends NeighbourhoodOperation[A,B] {
+case class LinearFilter[-A,K,+B](f: List[(A,K)] => B)(kernel: List[K]) extends NeighbourhoodOperation[A,B] {
   override def runOn(neighbourhood: List[A]): B =
     f (neighbourhood zip kernel)
 }
