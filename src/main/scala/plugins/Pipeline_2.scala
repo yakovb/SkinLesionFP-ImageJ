@@ -19,7 +19,7 @@ class Pipeline_2 extends PlugInFilter {
     }
 
     val result = new ByteProcessor(transformedImage.width, transformedImage.height, transformedImage.matrix.toArray)
-    new ImagePlus("grey pic", result) show
+    new ImagePlus("grey pic", result) show()
   }
 
 
