@@ -2,6 +2,7 @@ package operations
 
 import images.Image
 
+import scala.collection.parallel.ParMap
 import scala.collection.parallel.mutable.ParArray
 
 sealed trait Traversal
@@ -33,5 +34,11 @@ case class NeighbourTraverse() extends Traversal {
     val newMat = allNeighbourhoods map ((n: List[A]) => op runOn n)
     newMat.toParArray
   }
+}
+
+case class Histo_1ChannelTraverse() extends Traversal {
+
+  def traverse[A](im: Image[A]): ParMap[A,Int] =
+    im.matrix groupBy (pixel => pixel) mapValues (_ size)
 
 }
