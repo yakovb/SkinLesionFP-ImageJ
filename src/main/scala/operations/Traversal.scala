@@ -37,8 +37,24 @@ case class NeighbourTraverse() extends Traversal {
 }
 
 case class Histo_1ChannelTraverse() extends Traversal {
-
   def traverse[A](im: Image[A]): ParMap[A,Int] =
     im.matrix groupBy (pixel => pixel) mapValues (_ size)
+
+}
+
+case class Histo_3ChannelTraverse() extends Traversal {
+
+  def traverse[A](im: Image[Int]): Map[String, ParMap[Int, Int]] = {
+
+    def oneChannelTraverse(getPixelOp: Int => Int) =
+      im.matrix groupBy (getPixelOp(_))
+
+    val redHisto = oneChannelTraverse (pixel => (pixel >> 16) & 0xff) mapValues (_ size)
+    val greenHisto = oneChannelTraverse (pixel => (pixel >> 8) & 0xff) mapValues (_ size)
+    val blueHisto = oneChannelTraverse (pixel => pixel & 0xff) mapValues (_ size)
+
+    Map("Red" -> redHisto, "Blue" -> blueHisto, "Green" -> greenHisto)
+  }
+
 
 }
