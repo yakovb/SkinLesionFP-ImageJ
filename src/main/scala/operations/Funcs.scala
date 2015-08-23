@@ -21,3 +21,8 @@ object Funcs {
       ((pairs map (p => p._1 * p._2)).sum * (1/16)).toByte)(List(1,2,1,2,4,2,1,2,1)
     )
 }
+
+object BorderAction extends Enumeration {
+  type BorderAction = Value
+  val Crop = Value("Crop borders by 1 pixel")
+}
