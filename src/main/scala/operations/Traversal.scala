@@ -1,16 +1,17 @@
 package operations
 
-import images.{ParImage, Image}
+import images.{Image, ParImage}
 
 import scala.collection.immutable
-import scala.collection.parallel.mutable.ParArray
 
 sealed trait Traversal
 
 case class PointTraverse() extends Traversal {
 
-  def traverse[A,B](im: Image[A], pointOp: PointOperation[A,B]): ParArray[B] =
-    for (pixel <- im.matrix) yield pointOp runOn pixel
+  def traverse[A,B](im: Image[A], pointOp: PointOperation[A,B]): Image[B] = {
+    val newMat = for (pixel <- im.matrix) yield pointOp runOn pixel
+    ParImage(newMat, im.width, im.height)
+  }
 }
 
 case class NeighbourTraverse() extends Traversal {
