@@ -28,3 +28,8 @@ case class LinearFilter[-A,K,+B](f: List[(A,K)] => B)(kernel: List[K]) extends N
   override def runOn(neighbourhood: List[A]): B =
     f (neighbourhood zip kernel)
 }
+
+case class NonLinearFilterNoKernel[A,B](f: List[A] => B) extends NeighbourhoodOperation[A,B] {
+  override def runOn(neighbourhood: List[A]): B =
+    f (neighbourhood)
+}
