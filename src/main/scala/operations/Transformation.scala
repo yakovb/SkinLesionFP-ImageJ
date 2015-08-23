@@ -2,6 +2,7 @@ package operations
 
 import images.{Image, ParImage}
 import operations.BorderAction.BorderAction
+import scala.collection.parallel.ParMap
 
 sealed trait Transformation
 
@@ -31,4 +32,11 @@ case class TransformNeighbourhood[A,B](image: Image[A],
     }
   }
 
+}
+
+case class TransformToHistogram[A](image: Image[A],
+                                    traversal: Histo_1ChannelTraverse) extends Transformation {
+
+  def transform: ParMap[A, Int] =
+    traversal traverse image
 }
