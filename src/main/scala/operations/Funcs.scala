@@ -23,7 +23,9 @@ object Funcs {
   def medianFilter: NonLinearFilterNoKernel[Byte,Byte] =
     NonLinearFilterNoKernel[Byte,Byte](region => {
       val sorted = region.sorted
-      sorted(region.length / 2)
+      val l = sorted.length
+      if (l % 2 == 0) ((sorted(l/2) + sorted(l/2 + 1)) / 2).toByte
+      else sorted(l / 2)
     })
 }
 
