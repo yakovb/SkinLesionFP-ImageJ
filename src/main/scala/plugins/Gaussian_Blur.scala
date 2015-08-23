@@ -15,7 +15,7 @@ class Gaussian_Blur extends PlugInFilter {
 
     val transformedImage = TransformNeighbourhood[Byte,Byte](image, NeighbourTraverse(), Funcs.gaussBlur)(BorderAction.Crop) transform
 
-    val result = new ByteProcessor(transformedImage.width - 1, transformedImage.height - 1, transformedImage.matrix.toArray)
+    val result = new ByteProcessor(transformedImage.width, transformedImage.height, transformedImage.matrix.toArray)
     new ImagePlus("grey pic", result) show()
   }
 

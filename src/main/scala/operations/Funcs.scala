@@ -18,8 +18,7 @@ object Funcs {
 
   def gaussBlur: LinearFilter[Byte,Int,Byte] =
     LinearFilter[Byte,Int,Byte]((pairs: List[(Byte,Int)]) =>
-      ((pairs map (p => p._1 * p._2)).sum * (1/16)).toByte)(List(1,2,1,2,4,2,1,2,1)
-    )
+      ((pairs map (p => (p._1 & 0xff) * p._2)).sum * (1.0 / 16)).toByte) (List(1,2,1,2,4,2,1,2,1))
 }
 
 object BorderAction extends Enumeration {
