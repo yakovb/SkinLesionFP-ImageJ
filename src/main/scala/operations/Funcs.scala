@@ -40,9 +40,9 @@ object Funcs {
       val gg = g * 100
       val bb = b * 100
 
-      val x = rr * .4124f + gg * .3576f + bb * 1805f
-      val y = rr * .2126f + gg * .7152f + bb * 0722f
-      val z = rr * .0193f + gg * .1192f + bb * 9505f
+      val x = rr * .4124f + gg * .3576f + bb * .1805f
+      val y = rr * .2126f + gg * .7152f + bb * .0722f
+      val z = rr * .0193f + gg * .1192f + bb * .9505f
 
       Array(x,y,z)
     }
