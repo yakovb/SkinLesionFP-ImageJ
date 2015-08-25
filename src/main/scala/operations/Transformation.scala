@@ -16,11 +16,15 @@ case class TransformSimple[A,B](image: Image[A],
   }
 }
 
+case class TransformBlock[A,B](image: Image[A],
+                                traversal: BlockTraverse,
+                                opList: List[PointOp])
+
 //TODO handle border cropping based on kernel size
 case class TransformNeighbourhood[A,B](image: Image[A],
                                         traversal: NeighbourTraverse,
                                         neighbourOp: NeighbourhoodOperation[A,B])
-                                      (borderAction: BorderAction) extends Transformation {
+                                      (borderAction: BorderAction = BorderAction.Crop) extends Transformation {
 
   def transform: Image[B] = {
     val newMat = traversal traverse (image, neighbourOp)
