@@ -19,7 +19,7 @@ case class TransformSimple[A,B](image: Image[A],
 
 case class TransformBlock[A,B](image: Image[A],
                                 traversal: BlockTraverse,
-                                opList: List[PointOp])
+                                opList: List[PointOp[A,B]])
 
 //TODO handle border cropping based on kernel size
 case class TransformNeighbourhood[A,B](image: Image[A],

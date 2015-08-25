@@ -19,7 +19,7 @@ object Funcs {
     PointOp[Byte,Byte]( (p:Byte) => (255 - p).toByte )
 
   def gaussBlur =
-    LinearFilter[Byte,Byte](byte_2_float, List(1,2,1,2,4,2,1,2,1), _.toByte)
+    LinearFilter[Byte,Byte](byte_2_float, List(1,2,1,2,4,2,1,2,1), _.toByte, 1f/16)
 
   def medianFilter: NonLinearFilterNoKernel[Byte,Byte] =
     NonLinearFilterNoKernel[Byte,Byte](region => {

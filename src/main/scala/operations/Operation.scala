@@ -27,7 +27,7 @@ sealed trait NeighbourhoodOperation[-A,+B] extends Operation {
 case class LinearFilter[A,B](neighbourhoodConvert: A => Float,
                              kernel: List[Float], 
                              resultConvert: Float => B,
-                             normalizer: Float = 1.0) extends NeighbourhoodOperation[A,B] {
+                             normalizer: Float = 1.0f) extends NeighbourhoodOperation[A,B] {
 
   override def runOn(neighbourhood: List[A]): B = {
     if (neighbourhood.size != kernel.size) throw new Exception("kernel and source array must be the same size")
