@@ -30,7 +30,7 @@ object Funcs {
     })
 
   def rgb2xyz_Op(in: Int) = {
-        val temp = in / 255
+        val temp = in / 255f
         if (temp > .04045) Math.pow((temp + .055) / 1.055, 2.4).toFloat
         else temp / 12.92f}
 
