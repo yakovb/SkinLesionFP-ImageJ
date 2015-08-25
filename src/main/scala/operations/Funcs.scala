@@ -27,6 +27,21 @@ object Funcs {
       if (l % 2 == 0) ((sorted(l/2) + sorted(l/2 + 1)) / 2).toByte
       else sorted(l / 2)
     })
+
+  def rgb2xyz: PointOp_3Channel[Double, Array[Double]] =
+    PointOp_3Channel[Double,Array[Double]](
+      (r:Int) => {
+        val rr = r / 255
+        if (rr > .04045) Math.pow((rr + .055) / 1.055, 2.4)
+        else rr / 12.92},
+      (g:Int) => {
+        val gg = g / 255
+        if (gg > .04045) Math.pow((gg + .055) / 1.055, 2.4)
+        else gg / 12.92},
+      (b:Int) => {
+        val bb = b / 255
+        if (bb > .04045) Math.pow((bb + .055) / 1.055, 2.4)
+        else bb / 12.92})(Array(_,_,_))
 }
 
 object BorderAction extends Enumeration {
