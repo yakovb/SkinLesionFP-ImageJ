@@ -1,8 +1,8 @@
 package operations
 
 object Funcs {
-  def rgb_2_grey: PointOpRGB[Double, Byte] =
-    PointOpRGB[Double,Byte](_ * 0.2126, _ * 0.7152, _ * 0.0722) ((r,g,b) => (r+g+b).toByte)
+  def rgb_2_grey: PointOp_3Channel[Double, Byte] =
+    PointOp_3Channel[Double,Byte](_ * 0.2126, _ * 0.7152, _ * 0.0722) ((r,g,b) => (r+g+b).toByte)
 
   def id_filter: LinearFilter[Byte, Int, Byte] =
     LinearFilter[Byte,Int,Byte]((pairs: List[(Byte,Int)]) =>
