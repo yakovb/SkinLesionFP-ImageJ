@@ -24,29 +24,21 @@ sealed trait NeighbourhoodOperation[-A,+B] extends Operation {
   def runOn(neighbourhood: List[A]): B
 }
 
-//TODO normalise based on kernel vals
-case class LinearFilter[-A,K,+B](f: List[(A,K)] => B)(kernel: List[K]) extends NeighbourhoodOperation[A,B] {
-  override def runOn(neighbourhood: List[A]): B =
-    f (neighbourhood zip kernel)
+case class LinearFilter[A,B](neighbourhoodConvert: A => Float,
+                             kernel: List[Float], 
+                             resultConvert: Float => B,
+                             normalizer: Float = 1.0) extends NeighbourhoodOperation[A,B] {
+
+  override def runOn(neighbourhood: List[A]): B = {
+    if (neighbourhood.size != kernel.size) throw new Exception("kernel and source array must be the same size")
+    else {
+      val zipped = (neighbourhood map neighbourhoodConvert) zip kernel
+      resultConvert ((zipped map (p => p._1 * p._2) sum) * normalizer)
+    }
+  }
 }
 
 case class NonLinearFilterNoKernel[A,B](f: List[A] => B) extends NeighbourhoodOperation[A,B] {
   override def runOn(neighbourhood: List[A]): B =
     f (neighbourhood)
-}
-
-
-object Operation {
-  def convolve[N,A<:N,B<:N,C<:N,D<:N](source: List[A], sourceClean: A => C = _.asInstanceOf[C], kernel: List[B])
-                                     (normalizer: B = 1)
-                                     (converter: N => D)
-                                     (implicit n: Numeric[N]): D = {
-    import n._
-    if (source.size != kernel.size) throw new Exception("kernel and source array must be the same size")
-    else {
-      val zipped = (source map sourceClean) zip kernel
-      converter ((zipped.map(p => p._1 * p._2) sum) * normalizer)
-    }
-  }
-
 }
