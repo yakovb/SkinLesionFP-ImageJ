@@ -37,12 +37,14 @@ case class NonLinearFilterNoKernel[A,B](f: List[A] => B) extends NeighbourhoodOp
 
 
 object Operation {
-  def convolve[N,A<:N,B<:N,C<:N](source: List[A], kernel: List[B])(normalizer: B = 1)(converter: N => C)
-                                     (implicit n: Numeric[N]): C = {
+  def convolve[N,A<:N,B<:N,C<:N,D<:N](source: List[A], sourceClean: A => C = _.asInstanceOf[C], kernel: List[B])
+                                     (normalizer: B = 1)
+                                     (converter: N => D)
+                                     (implicit n: Numeric[N]): D = {
     import n._
     if (source.size != kernel.size) throw new Exception("kernel and source array must be the same size")
     else {
-      val zipped = source zip kernel
+      val zipped = (source map sourceClean) zip kernel
       converter ((zipped.map(p => p._1 * p._2) sum) * normalizer)
     }
   }
