@@ -19,7 +19,8 @@ case class BlockTraverse() extends Traversal {
   def traverse[A,B](im: Image[A], blockSize: Int)(blockOps: List[PointOperation[A,B]]): ParArray[B] = {
 
     (for (block <- im.matrix.toIterator grouped blockSize)
-      yield (for (i <- 0 until blockSize) yield blockOps(i).runOn(block(i))).toParArray).toParArray.flatten
+      yield (for (i <- 0 until blockSize)
+        yield blockOps(i) runOn block(i))   toParArray).toParArray.flatten
   }
 }
 
