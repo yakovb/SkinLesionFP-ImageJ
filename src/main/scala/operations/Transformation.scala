@@ -2,6 +2,7 @@ package operations
 
 import images.{Image, ParImage}
 import operations.BorderAction.BorderAction
+
 import scala.collection.parallel.ParMap
 
 sealed trait Transformation
@@ -22,9 +23,9 @@ case class TransformBlock[A,B](image: Image[A],
 
 //TODO handle border cropping based on kernel size
 case class TransformNeighbourhood[A,B](image: Image[A],
-                                        traversal: NeighbourTraverse,
-                                        neighbourOp: NeighbourhoodOperation[A,B])
-                                      (borderAction: BorderAction = BorderAction.Crop) extends Transformation {
+                                       traversal: NeighbourTraverse,
+                                       neighbourOp: NeighbourhoodOperation[A,B],
+                                       borderAction: BorderAction = BorderAction.Crop) extends Transformation {
 
   def transform: Image[B] = {
     val newMat = traversal traverse (image, neighbourOp)
