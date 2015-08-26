@@ -6,7 +6,7 @@ sealed trait PointOperation[-A,+B] extends Operation {
   def runOn(pixel: A): B
 }
 
-case class PointOp[A,B](f: A => B) extends PointOperation[A,B] {
+case class PointOp_1Channel[A,B](f: A => B) extends PointOperation[A,B] {
   override def runOn(pixel: A): B = f(pixel)
 }
 

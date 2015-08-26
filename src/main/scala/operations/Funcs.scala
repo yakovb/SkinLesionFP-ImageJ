@@ -10,13 +10,13 @@ object Funcs {
   def id_filter  =
     LinearFilter[Byte,Byte](byte_2_float, List(0,0,0,0,1,0,0,0,0), _.toByte)
 
-  def simple_binary: PointOp[Byte, Byte] =
-    PointOp[Byte,Byte]( (p:Byte) =>
+  def simple_binary: PointOp_1Channel[Byte, Byte] =
+    PointOp_1Channel[Byte,Byte]( (p:Byte) =>
       if (p < 80) 255.toByte
       else 0.toByte )
 
-  def invert: PointOp[Byte, Byte] =
-    PointOp[Byte,Byte]( (p:Byte) => (255 - p).toByte )
+  def invert: PointOp_1Channel[Byte, Byte] =
+    PointOp_1Channel[Byte,Byte]( (p:Byte) => (255 - p).toByte )
 
   def gaussBlur =
     LinearFilter[Byte,Byte](byte_2_float, List(1,2,1,2,4,2,1,2,1), _.toByte, 1f/16)
@@ -44,11 +44,10 @@ object Funcs {
       val y = rr * .2126f + gg * .7152f + bb * .0722f
       val z = rr * .0193f + gg * .1192f + bb * .9505f
 
-      Array(x,y,z)
-    }
-
-    )
+      Array(x,y,z)  })
   }
+
+  def xyz_to_CIELab
 
 }
 
