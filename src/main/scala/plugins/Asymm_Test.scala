@@ -3,7 +3,7 @@ import ij.plugin.filter.PlugInFilter
 import ij.plugin.filter.PlugInFilter._
 import ij.process.{ByteProcessor, ImageProcessor}
 
-class Orient_Binary extends PlugInFilter {
+class Asymm_Test extends PlugInFilter {
   override def setup(arg: String, imp: ImagePlus): Int =
     DOES_8G
 
