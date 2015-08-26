@@ -10,8 +10,9 @@ case class PointOp_1Channel[A,B](f: A => B) extends PointOperation[A,B] {
   override def runOn(pixel: A): B = f(pixel)
 }
 
-case class PointOp_3Channel[A,B](redOp: Int => A, greenOp: Int => A, blueOp: Int => A)
-                        (combine: (A,A,A) => B) extends PointOperation[Int,B] {
+case class PointOp_3ChannelToPoint[A,B](redOp: Int => A, greenOp: Int => A, blueOp: Int => A)
+                                (combine: (A,A,A) => B) extends PointOperation[Int,B] {
+  
   override def runOn(pixel: Int): B = {
     val red = redOp ((pixel >> 16) & 0xff)
     val green = greenOp ((pixel >> 8) & 0xff)
