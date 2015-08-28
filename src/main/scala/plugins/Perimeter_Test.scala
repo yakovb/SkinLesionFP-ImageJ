@@ -20,16 +20,12 @@ class Perimeter_Test extends PlugInFilter {
     getAndMarkContour(ip)
   }
 
-  def countContourLength(startPoint: Int) = {
-
-  }
-
-  def getAndMarkContour(ip: ImageProcessor): mutable.Stack[Int] = {
+  def getAndMarkContour(ip: ImageProcessor): mutable.Set[Int] = {
     val pixels = ip.getPixels.asInstanceOf[Array[Byte]]
     val w = ip.getWidth
     val h = ip.getHeight
 
-    val contour = scala.collection.mutable.Stack[Int]()
+    val contour = scala.collection.mutable.Set[Int]()
     val us, vs = List(-1,0,1)
 
     for {
@@ -44,11 +40,25 @@ class Perimeter_Test extends PlugInFilter {
           val i = calculateIndex(w, r,c)
           if (pixels(calculateIndex(w, r+v, c+u)) == WHITE) {
             pixels(i) = TEMPCOLOUR
-            contour.push(i)
+            contour.add(i)
           }
         }
       }
     }
+
+    val area = {
+      for {
+        r <- 0 until h
+        c <- 0 until w
+        if pixels(calculateIndex(w,r,c)) == BLACK || pixels(calculateIndex(w,r,c)) == TEMPCOLOUR
+      } yield true
+    }.size
+
+    val size = contour.size
+    val perim = size * .95
+    val circularity = 4 * Math.PI * area / Math.pow(perim, 2)
+    println(s"length of contour is $size and therefore perimeter measure is 0.95 * that, i.e. $perim")
+    println(s"circularity measure is 4pi * area / perimeter squared, i.e. $circularity")
     contour
   }
 
