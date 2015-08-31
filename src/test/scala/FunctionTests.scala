@@ -1,16 +1,18 @@
+import images.{Image, ParImage}
+import operations.{PointOp_1Channel, PointTraverse, TransformSimple}
 import org.scalatest.prop.TableDrivenPropertyChecks
 import org.scalatest.{Matchers, PropSpec}
 
 class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matchers {
-  val zeros = (new Matrices).getIntImages.head
-  val mats = Table(
-    "images",
-    zeros
-  )
+  val imageList = (new Matrices).getIntImages
+  val images = Table("images", imageList : _*)
 
-  property("zero image + 1 should be all 1s") {
-    forAll(mats) { image =>
-      image.matrix.map(_ + 1).sum should be (20 * 20)
+  property("point op '+1' on all-zeroes image should give all-ones image") {
+    forAll(images) { (image: Image[Int]) =>
+      val newImage: ParImage[Int] = TransformSimple[Int,Int](image, PointTraverse(), PointOp_1Channel(_ + 1)) transform;
+      newImage.matrix.sum should equal (image.matrix.sum + image.matrix.length)
     }
   }
+
+
 }
