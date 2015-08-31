@@ -1,12 +1,14 @@
 package operations
 
 object MyPipeline {
-  def getRed(pixel: Int): Int = 
-    (pixel >> 16) & 0xff
+  def getRed = PointOp_1Channel((pixel: Int) => (pixel >> 16) & 0xff)
 
-  def getGreen(pixel: Int): Int =
-    (pixel >> 8) & 0xff
+  def getGreen = PointOp_1Channel((pixel: Int) => (pixel >> 8) & 0xff)
 
-  def getBlue(pixel: Int): Int =
-    pixel & 0xff
+  def getBlue = PointOp_1Channel((pixel: Int) => pixel & 0xff)
+
+  def expandPointToThreeChannel =
+    PointTraverse() traverseAndExpand (_, List(getRed, getGreen, getBlue))
+
+  def transformToThreeChannel = TransformSimple()
 }
