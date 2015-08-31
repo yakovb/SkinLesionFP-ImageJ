@@ -1,4 +1,4 @@
-import operations.{PointOp_1Channel, PointOp_3Channel, PointTraverse, TransformSimple}
+import operations._
 import org.scalatest.prop.TableDrivenPropertyChecks
 import org.scalatest.{Matchers, PropSpec}
 
@@ -41,6 +41,24 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
         PointOp_1Channel((x:Int) => x),
         PointOp_1Channel((x:Int) => x)) transform;
       newImage.matrix.sum should be (image.matrix.sum * 3)
+    }
+  }
+
+  property("BlockTraverse traverse with ops (x => 1, y => 0) should give image of same pixel array length") {
+    forAll(images) { image =>
+      val newImage = TransformBlock[Int,Int](image, BlockTraverse(),
+        PointOp_1Channel(x => 1),
+        PointOp_1Channel(x => 0)) transform;
+      newImage.matrix.length should be (image.matrix.length)
+    }
+  }
+
+  property("BlockTraverse traverse with ops (x => 1, y => 0) should give summed image of array.length / 2") {
+    forAll(images) { image =>
+      val newImage = TransformBlock[Int,Int](image, BlockTraverse(),
+        PointOp_1Channel(x => 1),
+        PointOp_1Channel(x => 0)) transform;
+      newImage.matrix.sum.toFloat should be (image.matrix.length / 2.0)
     }
   }
 
