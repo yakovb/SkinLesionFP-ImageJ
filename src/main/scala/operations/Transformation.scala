@@ -16,7 +16,7 @@ case class TransformSimple[A,B](image: Image[A],
         ParImage(newMat, image.width, image.height)
       }
       case x => {
-        val newMat = traversal traverseAndExpand (image, pointOps)
+        val newMat = traversal traverseAndExpand (image, pointOps:_*)
         ParImage(newMat, image.width * x, image.height)
       }
     }
