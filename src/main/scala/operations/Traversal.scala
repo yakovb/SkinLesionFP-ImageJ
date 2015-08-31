@@ -36,22 +36,22 @@ case class BlockTraverse() extends Traversal {
   }
 }
 
-//TODO handle traversal cropping based on kernel size
-case class NeighbourTraverse() extends Traversal {
+
+case class NeighbourTraverse(verticalBuffer: Int, horizontalBuffer: Int) extends Traversal {
 
   def traverse[A,B](im: Image[A], op: NeighbourhoodOperation[A,B]): ParArray[B] = {
 
     val allNeighbourhoods =
       for {
-        row <- 1 until (im.height-1)
-        col <- 1 until (im.width-1)
+        row <- verticalBuffer until (im.height - verticalBuffer)
+        col <- horizontalBuffer until (im.width - horizontalBuffer)
       } yield
 
         (for {
-          u <- -1 to 1
-          v <- -1 to 1
+          v <- -verticalBuffer to verticalBuffer
+          u <- -horizontalBuffer to horizontalBuffer
         } yield
-          im.matrix(im.width * (row + u) + (col + v))).toList
+          im.matrix(im.width * (row + v) + (col + u))).toList
 
     val newMat = allNeighbourhoods map ((n: List[A]) => op runOn n)
     newMat.toParArray
