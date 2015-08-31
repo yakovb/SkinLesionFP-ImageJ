@@ -10,15 +10,16 @@ case class TransformSimple[A,B](image: Image[A],
                                 traversal: PointTraverse,
                                 pointOps: PointOperation[A,B]*) extends Transformation {
 
-  def transform: ParImage[B] = {
-    val newMat = traversal traverse (image, pointOps.head)
-    ParImage(newMat, image.width, image.height)
-  }
-  
-  def transformExpand: ParImage[List[B]] = {
-    val newMat = traversal traverseAndExpand (image, pointOps)
-    ParImage(newMat, image.width, image.height)
-  } 
+  def transform: ParImage[B] = pointOps.length match {
+      case 1 => {
+        val newMat = traversal traverse(image, pointOps.head)
+        ParImage(newMat, image.width, image.height)
+      }
+      case x => {
+        val newMat = traversal traverseAndExpand (image, pointOps)
+        ParImage(newMat, image.width + x, image.height + x)
+      }
+    }
 }
 
 case class TransformBlock[A,B](image: Image[A],
