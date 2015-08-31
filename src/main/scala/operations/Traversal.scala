@@ -13,13 +13,13 @@ case class PointTraverse() extends Traversal {
   def traverse[A,B](im: Image[A], pointOp: PointOperation[A,B]): ParArray[B] =
     for (pixel <- im.matrix) yield pointOp runOn pixel
 
-  def traverseAndExpand[A,B](im: Image[A], expansionOps: PointOperation[A,B]*): ParArray[B] = {
+  def traverseAndExpand[A,B](im: Image[A], expansionOps: List[PointOperation[A,B]]): ParArray[B] = {
 
     def builder(element: A, ops: List[PointOperation[A,B]]): List[B] = ops match {
       case Nil => Nil
       case op::rest => (op runOn element) :: builder(element, rest)
     }
-    (for (pixel <- im.matrix) yield builder(pixel, expansionOps.toList)).flatten
+    (for (pixel <- im.matrix) yield builder(pixel, expansionOps)).flatten
   }
 
 }
