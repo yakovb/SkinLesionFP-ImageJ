@@ -15,7 +15,7 @@ case class TransformSimple[A,B](image: Image[A],
     ParImage(newMat, image.width, image.height)
   }
   
-  def transformExpand: ParImage[Array[B]] = {
+  def transformExpand: ParImage[List[B]] = {
     val newMat = traversal traverseAndExpand (image, pointOps)
     ParImage(newMat, image.width, image.height)
   } 
