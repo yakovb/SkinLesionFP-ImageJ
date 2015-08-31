@@ -62,4 +62,23 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
     }
   }
 
+  property("BlockTraverse traverseAndReduce with ops ((x => x, y => y) => x + y) should give image with halved array length") {
+    forAll(images) { image =>
+      val newImage = TransformBlockReduce[Int,Int,Int](image, BlockTraverse(),(list: Seq[Int]) => list.sum,
+        PointOp_1Channel(x => x),
+        PointOp_1Channel(y => y)) transform;
+      newImage.matrix.length should be (image.matrix.length / 2)
+    }
+  }
+
+  property("BlockTraverse traverseAndReduce with ops ((x => x, y => y) => x + y) should give image with same array sum") {
+    forAll(images) { image =>
+      val newImage = TransformBlockReduce[Int,Int,Int](image, BlockTraverse(),(list: Seq[Int]) => list.sum,
+        PointOp_1Channel(x => x),
+        PointOp_1Channel(y => y)) transform;
+      newImage.matrix.sum should be (image.matrix.sum)
+    }
+
+  }
+
 }
