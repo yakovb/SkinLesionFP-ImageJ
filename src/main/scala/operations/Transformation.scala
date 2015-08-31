@@ -3,6 +3,7 @@ package operations
 import images.{Image, ParImage}
 
 import scala.collection.parallel.ParMap
+import scala.reflect.ClassTag
 
 sealed trait Transformation
 
@@ -29,6 +30,18 @@ case class TransformBlock[A,B](image: Image[A],
   def transform: ParImage[B] = {
     val newMat = traversal traverse (image, opList.toList)
     ParImage(newMat, image.width, image.height)
+  }
+}
+
+case class TransformBlockReduce[A,B,C<:AnyVal : ClassTag](image: Image[A],
+                                       traversal: BlockTraverse,
+                                       blockFold: Seq[B] => C,
+                                       opList: PointOp_1Channel[A,B]*) extends Transformation {
+
+  def transform: ParImage[C] = {
+    val newMat = traversal traverseAndReduce (image, opList.toList, blockFold)
+    val reduction = opList.length
+    ParImage(newMat, image.width - reduction, image.height - reduction)
   }
 }
 
