@@ -4,6 +4,7 @@ import images.Image
 
 import scala.collection.parallel.ParMap
 import scala.collection.parallel.mutable.ParArray
+import scala.reflect.ClassTag
 
 sealed trait Traversal
 
@@ -24,7 +25,7 @@ case class BlockTraverse() extends Traversal {
         yield blockOps(i) runOn block(i))   toParArray).toParArray.flatten
   }
 
-  def traverseAndReduce[A,B,C](im: Image[A],
+  def traverseAndReduce[A,B,C <: AnyVal : ClassTag](im: Image[A],
                                blockOps: List[PointOperation[A,B]],
                                 blockFold: Seq[B] => C): ParArray[C] = {
 
