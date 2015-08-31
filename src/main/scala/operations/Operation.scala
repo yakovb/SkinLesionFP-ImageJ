@@ -1,5 +1,7 @@
 package operations
 
+import images.Kernel
+
 sealed trait Operation
 
 sealed trait PointOperation[-A,+B] extends Operation {
@@ -26,14 +28,14 @@ sealed trait NeighbourhoodOperation[-A,+B] extends Operation {
 }
 
 case class LinearFilter[A,B](neighbourhoodConvert: A => Float,
-                             kernel: List[Float], 
+                             kernel: Kernel,
                              resultConvert: Float => B,
                              normalizer: Float = 1.0f) extends NeighbourhoodOperation[A,B] {
 
   override def runOn(neighbourhood: List[A]): B = {
-    if (neighbourhood.size != kernel.size) throw new Exception("kernel and source array must be the same size")
+    if (neighbourhood.size != (kernel.width * kernel.height)) throw new Exception("kernel and neighbourhood must be the same size")
     else {
-      val zipped = (neighbourhood map neighbourhoodConvert) zip kernel
+      val zipped = (neighbourhood map neighbourhoodConvert) zip kernel.matrix
       resultConvert ((zipped map (p => p._1 * p._2) sum) * normalizer)
     }
   }
