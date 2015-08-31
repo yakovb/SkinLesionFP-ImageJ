@@ -27,23 +27,27 @@ case class TransformBlock[A,B](image: Image[A],
   }
 }
 
-//TODO handle border cropping based on kernel size
+
 case class TransformNeighbourhood[A,B](image: Image[A],
                                        traversal: NeighbourTraverse,
                                        neighbourOp: NeighbourhoodOperation[A,B],
                                        borderAction: BorderAction = BorderAction.Crop) extends Transformation {
 
   def transform: Image[B] = {
-    val newMat = traversal traverse (image, neighbourOp)
+    val buffer = borderAction match {
+      case BorderAction.NoAction => 0
 
-    borderAction match {
-      case BorderAction.NoAction => ParImage(newMat, image.width, image.height)
-      case BorderAction.Crop => ParImage(newMat, image.width - 2, image.height - 2)
-      case _ => throw new Exception("Unknown border action: " + borderAction.toString)
+      case BorderAction.Crop => neighbourOp match {
+        case LinearFilter(kernel, _*) => kernel.width
+        case NonLinearFilterNoKernel(_, b) => b
+        case _ => throw new Exception(s"unrecognised neighbourhood operation: ${neighbourOp.toString}}")
+      }
     }
+    val newMat = traversal traverse(image, neighbourOp, buffer, buffer)
+    ParImage(newMat, image.width - buffer, image.height - buffer)
   }
-
 }
+
 
 case class TransformOneChannelToHistogram[A](image: Image[A],
                                     traversal: Histo_1ChannelTraverse) extends Transformation {

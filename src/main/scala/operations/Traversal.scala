@@ -37,9 +37,9 @@ case class BlockTraverse() extends Traversal {
 }
 
 
-case class NeighbourTraverse(verticalBuffer: Int, horizontalBuffer: Int) extends Traversal {
+case class NeighbourTraverse() extends Traversal {
 
-  def traverse[A,B](im: Image[A], op: NeighbourhoodOperation[A,B]): ParArray[B] = {
+  def traverse[A,B](im: Image[A], op: NeighbourhoodOperation[A,B], verticalBuffer: Int, horizontalBuffer: Int): ParArray[B] = {
 
     val allNeighbourhoods =
       for {

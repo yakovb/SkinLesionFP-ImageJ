@@ -27,8 +27,8 @@ sealed trait NeighbourhoodOperation[-A,+B] extends Operation {
   def runOn(neighbourhood: List[A]): B
 }
 
-case class LinearFilter[A,B](neighbourhoodConvert: A => Float,
-                             kernel: Kernel,
+case class LinearFilter[A,B](kernel: Kernel,
+                             neighbourhoodConvert: A => Float,
                              resultConvert: Float => B,
                              normalizer: Float = 1.0f) extends NeighbourhoodOperation[A,B] {
 
@@ -41,7 +41,7 @@ case class LinearFilter[A,B](neighbourhoodConvert: A => Float,
   }
 }
 
-case class NonLinearFilterNoKernel[A,B](f: List[A] => B) extends NeighbourhoodOperation[A,B] {
+case class NonLinearFilterNoKernel[A,B](f: List[A] => B, neighbourHoodSize: Int) extends NeighbourhoodOperation[A,B] {
   override def runOn(neighbourhood: List[A]): B =
     f (neighbourhood)
 }
