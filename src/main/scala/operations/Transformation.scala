@@ -1,7 +1,6 @@
 package operations
 
 import images.{Image, ParImage}
-import operations.BorderAction.BorderAction
 
 import scala.collection.parallel.ParMap
 
@@ -30,18 +29,13 @@ case class TransformBlock[A,B](image: Image[A],
 
 case class TransformNeighbourhood[A,B](image: Image[A],
                                        traversal: NeighbourTraverse,
-                                       neighbourOp: NeighbourhoodOperation[A,B],
-                                       borderAction: BorderAction = BorderAction.Crop) extends Transformation {
+                                       neighbourOp: NeighbourhoodOperation[A,B]) extends Transformation {
 
   def transform: Image[B] = {
-    val buffer = borderAction match {
-      case BorderAction.NoAction => 0
-
-      case BorderAction.Crop => neighbourOp match {
-        case LinearFilter(kernel, _*) => kernel.width
-        case NonLinearFilterNoKernel(_, b) => b
-        case _ => throw new Exception(s"unrecognised neighbourhood operation: ${neighbourOp.toString}}")
-      }
+    val buffer = neighbourOp match {
+      case LinearFilter(kernel, _*) => kernel.width
+      case NonLinearFilterNoKernel(_, b) => b
+      case _ => throw new Exception(s"unrecognised neighbourhood operation: ${neighbourOp.toString}}")
     }
     val newMat = traversal traverse(image, neighbourOp, buffer, buffer)
     ParImage(newMat, image.width - buffer, image.height - buffer)
