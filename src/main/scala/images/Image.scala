@@ -14,8 +14,8 @@ case class ParImage[A](pixels: ParArray[A], w: Int, h: Int) extends Image[A] {
   override val matrix: ParArray[A] = pixels
 }
 
-case class Kernel[A](pixels: ParArray[A], w: Int, h: Int) extends Image[A] {
+case class Kernel(pixels: ParArray[Float], w: Int, h: Int) extends Image[Float] {
   override val width: Int = w
   override val height: Int = h
-  override val matrix: ParArray[A] = pixels
+  override val matrix: ParArray[Float] = pixels
 }
