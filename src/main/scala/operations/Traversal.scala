@@ -16,7 +16,7 @@ case class PointTraverse() extends Traversal {
 
 case class BlockTraverse() extends Traversal {
 
-  def traverse[A,B](im: Image[A])(blockOps: List[PointOperation[A,B]]): ParArray[B] = {
+  def traverse[A,B](im: Image[A], blockOps: List[PointOperation[A,B]]): ParArray[B] = {
     val blockSize = blockOps.size
     (for (block <- im.matrix.toIterator grouped blockSize)
       yield (for (i <- 0 until blockSize)
