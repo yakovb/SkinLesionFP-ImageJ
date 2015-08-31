@@ -4,7 +4,7 @@ import scala.io.Source
 
 class Matrices {
   val root = "/home/yakov/src/SkinLesionFP-ImageJ/src/test/resources/"
-  val fileList = List("allZeros.csv", "allOnes.csv", "allRand.csv")
+  val fileList = List("allZeros.csv", "allOnes.csv", "allRand.csv", "lena_grayscale.csv")
 
   def getIntImages = fileList.map(f => makeImage(f))
 

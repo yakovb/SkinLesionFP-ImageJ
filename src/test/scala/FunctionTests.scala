@@ -20,7 +20,7 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
         g => 1,
         b => 1)
         ((r:Int,g:Int,b:Int) => (r + g + b).toByte)) transform;
-      newImage.matrix should equal (Array.fill(400)(3))
+      newImage.matrix should equal (Array.fill(newImage.width * newImage.height)(3))
     }
   }
 
@@ -33,7 +33,6 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
       newImage.matrix.length should equal (image.matrix.length * 3)
     }
   }
-
 
   property("PointTraverse traverseAndExpand with 1-channel op (x => x x x) should result in summed image of 3 * original") {
     forAll(images) { image =>
