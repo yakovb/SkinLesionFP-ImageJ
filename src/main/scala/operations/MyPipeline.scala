@@ -7,8 +7,5 @@ object MyPipeline {
 
   def getBlue = PointOp_1Channel((pixel: Int) => pixel & 0xff)
 
-  def expandPointToThreeChannel =
-    PointTraverse() traverseAndExpand (_, List(getRed, getGreen, getBlue))
-
-  def transformToThreeChannel = TransformSimple()
+  def transformToThreeChannel = TransformSimple(_, PointTraverse(), getRed,getGreen,getBlue)
 }
