@@ -4,9 +4,13 @@ import scala.io.Source
 
 class Matrices {
   val root = "/home/yakov/src/SkinLesionFP-ImageJ/src/test/resources/"
-  val fileList = List("allZeros.csv", "allOnes.csv", "allRand.csv", "lena_grayscale.csv")
+  val greyList = List("allZeros.csv", "allOnes.csv", "allRand.csv", "lena_grayscale.csv")
+  val colourList = List("colourBlue.csv", "colourGreen.csv", "colourRed.csv", "colourRandom.csv")
+  val completeList = greyList ++ colourList
 
-  def getIntImages = fileList.map(f => makeImage(f))
+  def getGreyIntImages = greyList.map(makeImage)
+  def getColourIntImages = colourList.map(makeImage)
+  def getAllIntImages = completeList.map(makeImage)
 
   private def makeImage(file: String): Image[Int] = {
     val stringLines: List[Array[String]] = Source.fromFile(root + file).getLines().map(line => line.split(',')).toList
