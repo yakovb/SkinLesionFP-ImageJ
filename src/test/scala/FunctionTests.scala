@@ -102,26 +102,42 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
     forAll(allIntImagesTable) { image =>
       an [IllegalArgumentException] should be thrownBy {
         TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
-          NonLinearFilterNoKernel(0, lst => lst.max))
+          NonLinearFilterNoKernel(0, lst => lst.max)) transform
       }
     }
   }
 
-  //TODO nhood transform - linear filter - kernel size 1: no crop; pix + 1 is correct
+  //TODO nhood transform - nonlin filter - hood size 1: no crop; id filter correct; zero filter correct
+  property("Neighbourhood linear filter with kernel size 1 should throw exception") {
+    forAll(allIntImagesTable) { image =>
+      an [IllegalArgumentException] should be thrownBy {
+        TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
+          LinearFilter(Kernel(List(1),1,1), _.toFloat, _.toInt)) transform
+      }
+    }
+  }
+
+  property("Neighbourhood non-linear filter with neighbourhood size 1 should throw exception") {
+    forAll(allIntImagesTable) { image =>
+      an [IllegalArgumentException] should be thrownBy {
+        TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
+          NonLinearFilterNoKernel(1, lst => lst.max)) transform
+      }
+    }
+  }
 
   //TODO nhood transform - linear filter - kernel size 3x3: 1 pix crop; id filter correct; zero filter correct (sum = border)
-
-  //TODO nhood transform - linear filter - kernel size 5x5: 2 pix crop; id filter correct; zero filter correct (sum = border)
-
-  //TODO nhood transform - linear filter - kernel size 9x9: 4 pix crop; id filter correct; zero filter correct (sum = border)
-
-  //TODO nhood transform - nonlin filter - hood size 1: no crop; id filter correct; zero filter correct
-
   //TODO nhood transform - nonlin filter - hood size 3x3: 1 pix crop; id filter correct; zero filter correct
 
+  //TODO nhood transform - linear filter - kernel size 5x5: 2 pix crop; id filter correct; zero filter correct (sum = border)
   //TODO nhood transform - nonlin filter - hood size 5x5: 2 pix crop; id filter correct; zero filter correct
 
+  //TODO nhood transform - linear filter - kernel size 9x9: 4 pix crop; id filter correct; zero filter correct (sum = border)
   //TODO nhood transform - nonlin filter - hood size 9x9: 4 pix crop; id filter correct; zero filter correct
+
+
+
+
 
   //TODO 1 channel histo - only for grey images: ones; rand; zeros; lena
 
