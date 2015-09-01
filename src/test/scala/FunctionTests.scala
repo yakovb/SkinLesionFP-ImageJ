@@ -78,7 +78,28 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
         PointOp_1Channel(y => y)) transform;
       newImage.matrix.sum should be (image.matrix.sum)
     }
-
   }
+
+  //TODO nhood transform - linear filter - empty kernel: error
+
+  //TODO nhood transform - linear filter - kernel size 1: no crop; pix + 1 is correct
+
+  //TODO nhood transform - linear filter - kernel size 3x3: 1 pix crop; id filter correct; zero filter correct (sum = border)
+
+  //TODO nhood transform - linear filter - kernel size 5x5: 2 pix crop; id filter correct; zero filter correct (sum = border)
+
+  //TODO nhood transform - linear filter - kernel size 9x9: 4 pix crop; id filter correct; zero filter correct (sum = border)
+
+  //TODO nhood transform - nonlin filter - hood size 1: no crop; id filter correct; zero filter correct
+
+  //TODO nhood transform - nonlin filter - hood size 3x3: 1 pix crop; id filter correct; zero filter correct
+
+  //TODO nhood transform - nonlin filter - hood size 5x5: 2 pix crop; id filter correct; zero filter correct
+
+  //TODO nhood transform - nonlin filter - hood size 9x9: 4 pix crop; id filter correct; zero filter correct
+
+  //TODO 1 channel histo - only for grey images: ones; rand; zeros; lena
+
+  //TODO 3 channel histo - only for Int colour images: all red; all green; all blue; random
 
 }
