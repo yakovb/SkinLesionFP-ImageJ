@@ -259,6 +259,30 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
     }
   }
 
-  //TODO 3 channel histo - only for Int colour images: all red; all green; all blue; random
+  property("Colour image histograms correspond to counts of distinct RGB values in pixel arrays") {
+    forAll(colourIntImagesTable) { image =>
+      val manualRed = {
+        val reds = image.matrix.map(p => (p >> 16) & 0xff)
+        val redPairs = reds.distinct.map(v => (v, reds.count(_ == v)))
+        redPairs.toMap
+      }
+      val manualGreen = {
+        val greens = image.matrix.map(p => (p >> 8) & 0xff)
+        val greenPairs = greens.distinct.map(v => (v, greens.count(_ == v)))
+        greenPairs.toMap
+      }
+      val manualBlue = {
+        val blues = image.matrix.map(p => p & 0xff)
+        val bluePairs = blues.distinct.map(v => (v, blues.count(_ == v)))
+        bluePairs.toMap
+      }
+      val autoHisto = TransformThreeChannelToHistogram(image, Histo_3ChannelTraverse()) transform
+      val autoRed = autoHisto("Red")
+      val autoGreen = autoHisto("Green")
+      val autoBlue = autoHisto("Blue")
+
+      (autoRed, autoGreen, autoBlue) should equal ((manualRed, manualGreen, manualBlue))
+    }
+  }
 
 }
