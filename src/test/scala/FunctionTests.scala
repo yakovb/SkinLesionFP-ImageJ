@@ -136,8 +136,9 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
       (oldLength - oldWidth*2 - oldHeight*2, oldWidth-2, oldHeight-2)
     }
   }
-  //TODO nhood transform - linear filter - kernel size 3x3: zero filter correct (sum = border)
-  property("Neighbourhood linear filter with kernel size 3, id filter: result image sum should be less than original") {
+
+  property("Neighbourhood linear filter with kernel size 3, id filter: result image first row should equal " +
+    "cropped original second row") {
     forAll(colourIntImagesTable) { image =>
       val newImage = TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
         LinearFilter(Kernel(List(0,0,0,0,1,0,0,0,0),3,3), _.toFloat, _.toInt)) transform
@@ -146,12 +147,25 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
       newFirstRow should equal (oldCroppedSecondRow)
     }
   }
-  //TODO nhood transform - nonlin filter - hood size 3x3: 1 pix crop; id filter correct; zero filter correct
 
-  //TODO nhood transform - linear filter - kernel size 5x5: 2 pix crop; id filter correct; zero filter correct (sum = border)
+  //TODO nhood transform - nonlin filter - hood size 3x3: 1 pix crop; id filter correct; zero filter correct
+  property("Neighbourhood non-linear filter with neighbourhood size 3 should crop result image width and height by 2 pixels ") {
+    forAll(allIntImagesTable) { image =>
+      val newImage = TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
+        NonLinearFilterNoKernel(3, _ => 1)) transform
+      val (newLength, newWidth, newHeigh) = (newImage.matrix.length, newImage.width, newImage.height)
+      val (oldLength, oldWidth, oldHeight) = (image.matrix.length, image.width, image.height)
+
+      (newLength, newWidth, newHeigh) should be
+      (oldLength - oldWidth*2 - oldHeight*2, oldWidth-2, oldHeight-2)
+    }
+  }
+
+
+  //TODO nhood transform - linear filter - kernel size 5x5: 2 pix crop; id filter correct
   //TODO nhood transform - nonlin filter - hood size 5x5: 2 pix crop; id filter correct; zero filter correct
 
-  //TODO nhood transform - linear filter - kernel size 9x9: 4 pix crop; id filter correct; zero filter correct (sum = border)
+  //TODO nhood transform - linear filter - kernel size 9x9: 4 pix crop; id filter correct
   //TODO nhood transform - nonlin filter - hood size 9x9: 4 pix crop; id filter correct; zero filter correct
 
   //TODO 1 channel histo - only for grey images: ones; rand; zeros; lena
