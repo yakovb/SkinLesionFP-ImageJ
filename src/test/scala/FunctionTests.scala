@@ -125,16 +125,25 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
     }
   }
 
-  //TODO nhood transform - linear filter - kernel size 3x3: id filter correct; zero filter correct (sum = border)
   property("Neighbourhood linear filter with kernel size 3 should crop result image width and height by 2 pixels ") {
     forAll(allIntImagesTable) { image =>
       val newImage = TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
-        LinearFilter(Kernel(List.fill(9)(1),3,3), _.toFloat, _.toInt)) transform;
+        LinearFilter(Kernel(List.fill(9)(1),3,3), _.toFloat, _.toInt)) transform
       val (newLength, newWidth, newHeigh) = (newImage.matrix.length, newImage.width, newImage.height)
       val (oldLength, oldWidth, oldHeight) = (image.matrix.length, image.width, image.height)
 
       (newLength, newWidth, newHeigh) should be
       (oldLength - oldWidth*2 - oldHeight*2, oldWidth-2, oldHeight-2)
+    }
+  }
+  //TODO nhood transform - linear filter - kernel size 3x3: zero filter correct (sum = border)
+  property("Neighbourhood linear filter with kernel size 3, id filter: result image sum should be less than original") {
+    forAll(colourIntImagesTable) { image =>
+      val newImage = TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
+        LinearFilter(Kernel(List(0,0,0,0,1,0,0,0,0),3,3), _.toFloat, _.toInt)) transform
+      val newFirstRow = newImage.matrix.take(newImage.width)
+      val oldCroppedSecondRow = image.matrix.slice(image.width, image.width + image.width).drop(1).init
+      newFirstRow should equal (oldCroppedSecondRow)
     }
   }
   //TODO nhood transform - nonlin filter - hood size 3x3: 1 pix crop; id filter correct; zero filter correct
