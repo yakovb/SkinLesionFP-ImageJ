@@ -51,13 +51,14 @@ case class TransformNeighbourhood[A,B](image: Image[A],
                                        neighbourOp: NeighbourhoodOperation[A,B]) extends Transformation {
 
   def transform: Image[B] = {
-    val buffer = neighbourOp match {
+    val imageBuffer = neighbourOp match {
       case LinearFilter(kernel, _,_,_) => kernel.width
       case NonLinearFilterNoKernel(b, _) => b
       case _ => throw new Exception(s"unrecognised neighbourhood operation: ${neighbourOp.toString}}")
     }
-    val newMat = traversal traverse(image, neighbourOp, buffer, buffer)
-    ParImage(newMat, image.width - buffer, image.height - buffer)
+    val neighbourBuffer = imageBuffer / 2
+    val newMat = traversal traverse(image, neighbourOp, neighbourBuffer, neighbourBuffer)
+    ParImage(newMat, image.width - imageBuffer + 1, image.height - imageBuffer + 1)
   }
 }
 
