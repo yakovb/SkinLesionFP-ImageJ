@@ -12,7 +12,7 @@ case class ParImage[A](pixels: ParArray[A], w: Int, h: Int) extends Image[A] {
   require(pixels.nonEmpty, "cannot pass empty pixel array")
   require(w != 0, "cannot have image with no width")
   require(h != 0, "cannot have image with no height")
-  require(w * h == pixels.length, "check arguments: width * height should equal pixel array length")
+  require(w * h == pixels.length, s"check arguments: width * height should equal pixel array length, but you have $w * $h = ${pixels.length}")
 
   override val width: Int = w
   override val height: Int = h
@@ -23,7 +23,7 @@ case class Kernel(pixels: List[Float], w: Int, h: Int) extends Image[Float] {
   require(pixels.nonEmpty, "cannot pass empty pixel array")
   require(w != 0, "cannot have image with no width")
   require(h != 0, "cannot have image with no height")
-  require(w * h == pixels.length, "check arguments: width * height should equal pixel array length")
+  require(w * h == pixels.length, s"check arguments: width * height should equal pixel array length, but you have $w * $h = ${pixels.length}")
 
   override val width: Int = w
   override val height: Int = h
