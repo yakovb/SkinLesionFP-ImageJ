@@ -213,7 +213,39 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
       newFirstRow should equal (oldCroppedSecondRow)
     }
   }
-  //TODO nhood transform - nonlin filter - hood size 9x9: 4 pix crop; id filter correct; zero filter correct
+
+  property("Neighbourhood non-linear filter with neighbourhood size 9x9 should crop result image width and height " +
+    "by 4 pixels ") {
+    forAll(allIntImagesTable) { image =>
+      val newImage = TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
+        NonLinearFilterNoKernel(9, _ => 1)) transform
+      val (newLength, newWidth, newHeigh) = (newImage.matrix.length, newImage.width, newImage.height)
+      val (oldLength, oldWidth, oldHeight) = (image.matrix.length, image.width, image.height)
+
+      (newLength, newWidth, newHeigh) should be
+      (oldLength - oldWidth*4 - oldHeight*4, oldWidth-4, oldHeight-4)
+    }
+  }
+
+  property("Neighbourhood non-linear filter with kernel neighbourhood 9x9, id filter: result image first row should equal " +
+    "cropped original fifth row") {
+    forAll(colourIntImagesTable) { image =>
+      val newImage = TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
+        NonLinearFilterNoKernel(9, l => l(l.length / 2))) transform
+      val newFirstRow = newImage.matrix.take(newImage.width)
+      val oldCroppedSecondRow = image.matrix.slice(image.width * 4, image.width * 4 + image.width).drop(4).reverse.drop(4).reverse
+      newFirstRow should equal (oldCroppedSecondRow)
+    }
+  }
+
+  property("Neighbourhood non-linear filter with kernel neighbourhood 9x9, zero filter: result image pixel value sum " +
+    "should be zero") {
+    forAll(colourIntImagesTable) { image =>
+      val newImage = TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
+        NonLinearFilterNoKernel(9, _ => 0)) transform;
+      newImage.matrix.sum should equal (0)
+    }
+  }
 
   //TODO 1 channel histo - only for grey images: ones; rand; zeros; lena
   //TODO 3 channel histo - only for Int colour images: all red; all green; all blue; random
