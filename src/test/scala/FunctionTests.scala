@@ -86,7 +86,6 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
     }
   }
 
-  //TODO nhood transform - linear filter - empty kernel: error
   property("Neighbourhood linear filter with empty kernel should throw exception") {
     forAll(allIntImagesTable) { image =>
       an [IllegalArgumentException] should be thrownBy {
