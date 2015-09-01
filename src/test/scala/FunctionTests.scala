@@ -171,10 +171,15 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
     }
   }
 
-  //TODO nhood transform - nonlin filter - hood size 3x3: zero filter correct
+  property("Neighbourhood non-linear filter with kernel neighbourhood 3, zero filter: result image pixel value sum " +
+    "should be zero") {
+    forAll(colourIntImagesTable) { image =>
+      val newImage = TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
+        NonLinearFilterNoKernel(3, _ => 0)) transform;
+      newImage.matrix.sum should equal (0)
+    }
+  }
 
-  //TODO nhood transform - linear filter - kernel size 5x5: 2 pix crop; id filter correct
-  //TODO nhood transform - nonlin filter - hood size 5x5: 2 pix crop; id filter correct; zero filter correct
 
   //TODO nhood transform - linear filter - kernel size 9x9: 4 pix crop; id filter correct
   //TODO nhood transform - nonlin filter - hood size 9x9: 4 pix crop; id filter correct; zero filter correct
