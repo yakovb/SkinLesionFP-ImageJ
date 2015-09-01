@@ -107,7 +107,6 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
     }
   }
 
-  //TODO nhood transform - nonlin filter - hood size 1: no crop; id filter correct; zero filter correct
   property("Neighbourhood linear filter with kernel size 1 should throw exception") {
     forAll(allIntImagesTable) { image =>
       an [IllegalArgumentException] should be thrownBy {
@@ -126,7 +125,18 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
     }
   }
 
-  //TODO nhood transform - linear filter - kernel size 3x3: 1 pix crop; id filter correct; zero filter correct (sum = border)
+  //TODO nhood transform - linear filter - kernel size 3x3: id filter correct; zero filter correct (sum = border)
+  property("Neighbourhood linear filter with kernel size 3 should crop result image width and height by 2 pixels ") {
+    forAll(allIntImagesTable) { image =>
+      val newImage = TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
+        LinearFilter(Kernel(List.fill(9)(1),3,3), _.toFloat, _.toInt)) transform;
+      val (newLength, newWidth, newHeigh) = (newImage.matrix.length, newImage.width, newImage.height)
+      val (oldLength, oldWidth, oldHeight) = (image.matrix.length, image.width, image.height)
+
+      (newLength, newWidth, newHeigh) should be
+      (oldLength - oldWidth*2 - oldHeight*2, oldWidth-2, oldHeight-2)
+    }
+  }
   //TODO nhood transform - nonlin filter - hood size 3x3: 1 pix crop; id filter correct; zero filter correct
 
   //TODO nhood transform - linear filter - kernel size 5x5: 2 pix crop; id filter correct; zero filter correct (sum = border)
@@ -135,12 +145,7 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
   //TODO nhood transform - linear filter - kernel size 9x9: 4 pix crop; id filter correct; zero filter correct (sum = border)
   //TODO nhood transform - nonlin filter - hood size 9x9: 4 pix crop; id filter correct; zero filter correct
 
-
-
-
-
   //TODO 1 channel histo - only for grey images: ones; rand; zeros; lena
-
   //TODO 3 channel histo - only for Int colour images: all red; all green; all blue; random
 
 }
