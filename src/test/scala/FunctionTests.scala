@@ -3,18 +3,23 @@ import org.scalatest.prop.TableDrivenPropertyChecks
 import org.scalatest.{Matchers, PropSpec}
 
 class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matchers {
-  val imageList = (new Matrices).getIntImages
-  val images = Table("images", imageList : _*)
+  val greyIntImageList = (new Matrices).getGreyIntImages
+  val colourIntImageList = (new Matrices).getColourIntImages
+  val allIntImageList = (new Matrices).getAllIntImages
+
+  val greyIntImagesTable = Table("grey Int images", greyIntImageList: _*)
+  val colourIntImagesTable = Table("colour Int images", colourIntImageList: _*)
+  val allIntImagesTable = Table("all Int images", allIntImageList: _*)
 
   property("PointTraverse traverse with 1-channel op (x + 1) should result in sum of array + length of array") {
-    forAll(images) { image =>
+    forAll(allIntImagesTable) { image =>
       val newImage = TransformSimple[Int,Int](image, PointTraverse(), PointOp_1Channel(_ + 1)) transform;
       newImage.matrix.sum should equal (image.matrix.sum + image.matrix.length)
     }
   }
 
   property("PointTraverse traverse with 3-channel op (rgb => 3) should result in image of all 3's") {
-    forAll(images) { image =>
+    forAll(allIntImagesTable) { image =>
       val newImage = TransformSimple[Int,Int](image, PointTraverse(), PointOp_3Channel(
         r => 1,
         g => 1,
@@ -25,7 +30,7 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
   }
 
   property("PointTraverse traverseAndExpand with 1-channel op (x => x x x) should result in new image length of original * 3") {
-    forAll(images) { image =>
+    forAll(allIntImagesTable) { image =>
       val newImage = TransformSimple[Int,Int](image, PointTraverse(),
         PointOp_1Channel((x:Int) => x),
         PointOp_1Channel((x:Int) => x),
@@ -35,7 +40,7 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
   }
 
   property("PointTraverse traverseAndExpand with 1-channel op (x => x x x) should result in summed image of 3 * original") {
-    forAll(images) { image =>
+    forAll(allIntImagesTable) { image =>
       val newImage = TransformSimple[Int,Int](image, PointTraverse(),
         PointOp_1Channel((x:Int) => x),
         PointOp_1Channel((x:Int) => x),
@@ -45,7 +50,7 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
   }
 
   property("BlockTraverse traverse with ops (x => 1, y => 0) should give image of same pixel array length") {
-    forAll(images) { image =>
+    forAll(allIntImagesTable) { image =>
       val newImage = TransformBlock[Int,Int](image, BlockTraverse(),
         PointOp_1Channel(x => 1),
         PointOp_1Channel(x => 0)) transform;
@@ -54,7 +59,7 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
   }
 
   property("BlockTraverse traverse with ops (x => 1, y => 0) should give summed image of array.length / 2") {
-    forAll(images) { image =>
+    forAll(allIntImagesTable) { image =>
       val newImage = TransformBlock[Int,Int](image, BlockTraverse(),
         PointOp_1Channel(x => 1),
         PointOp_1Channel(x => 0)) transform;
@@ -63,7 +68,7 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
   }
 
   property("BlockTraverse traverseAndReduce with ops ((x => x, y => y) => x + y) should give image with halved array length") {
-    forAll(images) { image =>
+    forAll(allIntImagesTable) { image =>
       val newImage = TransformBlockReduce[Int,Int,Int](image, BlockTraverse(),(list: Seq[Int]) => list.sum,
         PointOp_1Channel(x => x),
         PointOp_1Channel(y => y)) transform;
@@ -72,7 +77,7 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
   }
 
   property("BlockTraverse traverseAndReduce with ops ((x => x, y => y) => x + y) should give image with same array sum") {
-    forAll(images) { image =>
+    forAll(allIntImagesTable) { image =>
       val newImage = TransformBlockReduce[Int,Int,Int](image, BlockTraverse(),(list: Seq[Int]) => list.sum,
         PointOp_1Channel(x => x),
         PointOp_1Channel(y => y)) transform;
@@ -81,6 +86,7 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
   }
 
   //TODO nhood transform - linear filter - empty kernel: error
+//  property("Neighbourhood linear filter with empty kernel should throw error")
 
   //TODO nhood transform - linear filter - kernel size 1: no crop; pix + 1 is correct
 
