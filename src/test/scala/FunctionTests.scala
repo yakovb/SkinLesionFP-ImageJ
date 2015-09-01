@@ -148,7 +148,6 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
     }
   }
 
-  //TODO nhood transform - nonlin filter - hood size 3x3: 1 pix crop; id filter correct; zero filter correct
   property("Neighbourhood non-linear filter with neighbourhood size 3 should crop result image width and height by 2 pixels ") {
     forAll(allIntImagesTable) { image =>
       val newImage = TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
@@ -161,6 +160,18 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
     }
   }
 
+  property("Neighbourhood non-linear filter with kernel neighbourhood 3, id filter: result image first row should equal " +
+    "cropped original second row") {
+    forAll(colourIntImagesTable) { image =>
+      val newImage = TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
+        NonLinearFilterNoKernel(3, l => l(l.length / 2))) transform
+      val newFirstRow = newImage.matrix.take(newImage.width)
+      val oldCroppedSecondRow = image.matrix.slice(image.width, image.width + image.width).drop(1).init
+      newFirstRow should equal (oldCroppedSecondRow)
+    }
+  }
+
+  //TODO nhood transform - nonlin filter - hood size 3x3: zero filter correct
 
   //TODO nhood transform - linear filter - kernel size 5x5: 2 pix crop; id filter correct
   //TODO nhood transform - nonlin filter - hood size 5x5: 2 pix crop; id filter correct; zero filter correct
