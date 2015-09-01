@@ -1,3 +1,4 @@
+import images.Kernel
 import operations._
 import org.scalatest.prop.TableDrivenPropertyChecks
 import org.scalatest.{Matchers, PropSpec}
@@ -86,7 +87,17 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
   }
 
   //TODO nhood transform - linear filter - empty kernel: error
-//  property("Neighbourhood linear filter with empty kernel should throw error")
+  property("Neighbourhood linear filter with empty kernel should throw error") {
+    forAll(allIntImagesTable) { image =>
+      an [IllegalArgumentException] should be thrownBy {
+        TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
+          LinearFilter(
+            Kernel(List[Float](),0,0),
+            _.toFloat,
+            _.toInt))
+      }
+    }
+  }
 
   //TODO nhood transform - linear filter - kernel size 1: no crop; pix + 1 is correct
 
