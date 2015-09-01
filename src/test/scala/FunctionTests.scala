@@ -87,7 +87,7 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
   }
 
   //TODO nhood transform - linear filter - empty kernel: error
-  property("Neighbourhood linear filter with empty kernel should throw error") {
+  property("Neighbourhood linear filter with empty kernel should throw exception") {
     forAll(allIntImagesTable) { image =>
       an [IllegalArgumentException] should be thrownBy {
         TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
@@ -95,6 +95,15 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
             Kernel(List[Float](),0,0),
             _.toFloat,
             _.toInt))
+      }
+    }
+  }
+
+  property("Neighbourhood non-linear filter with zero neighbourhood size should throw exception") {
+    forAll(allIntImagesTable) { image =>
+      an [IllegalArgumentException] should be thrownBy {
+        TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
+          NonLinearFilterNoKernel(0, lst => lst.max))
       }
     }
   }
