@@ -247,7 +247,18 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
     }
   }
 
-  //TODO 1 channel histo - only for grey images: ones; rand; zeros; lena
+  property("Grey image histograms correspond to counts of distinct values in pixel arrays") {
+    forAll(greyIntImagesTable) { image =>
+      val manualHisto = {
+        val distinct = image.matrix.distinct
+        val mapPairs = distinct.map(v => (v, image.matrix.count(_ == v)))
+        mapPairs.toMap
+      }
+      val autoHisto = TransformOneChannelToHistogram[Int](image, Histo_1ChannelTraverse()) transform;
+      manualHisto should equal (autoHisto)
+    }
+  }
+
   //TODO 3 channel histo - only for Int colour images: all red; all green; all blue; random
 
 }
