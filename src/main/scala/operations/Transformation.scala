@@ -41,7 +41,7 @@ case class TransformBlockReduce[A,B,C<:AnyVal : ClassTag](image: Image[A],
   def transform: ParImage[C] = {
     val newMat = traversal traverseAndReduce (image, opList.toList, blockFold)
     val reduction = opList.length
-    ParImage(newMat, image.width - reduction, image.height - reduction)
+    ParImage(newMat, image.width / reduction, image.height)
   }
 }
 
