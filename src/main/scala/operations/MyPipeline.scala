@@ -26,12 +26,16 @@ object MyPipeline {
   }
 
 
-  def medianThreeChannel(mixedRegion: List[Int]) = {
-    val medians = splitRgbRegion(mixedRegion) map medianOneChannel
-    combineRgb(medians)
+
+
+
+  def medianFilter = {
+
+    def medianThreeChannel(mixedRegion: List[Int]) = {
+      val medians = splitRgbRegion(mixedRegion) map medianOneChannel
+      combineRgb(medians)
+    }
+    def medianOp = NonLinearFilterNoKernel(3, medianThreeChannel)
+    TransformNeighbourhood(_: Image[Int], NeighbourTraverse(), medianOp) transform
   }
-
-  def medianOp = NonLinearFilterNoKernel(3, medianThreeChannel)
-
-  def medianFilter = TransformNeighbourhood(_: Image[Int], NeighbourTraverse(), medianOp) transform
 }
