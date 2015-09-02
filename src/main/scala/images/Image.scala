@@ -2,7 +2,7 @@ package images
 
 import scala.collection.parallel.mutable.ParArray
 
-sealed trait Image[A] {
+trait Image[A] {
   val width: Int
   val height: Int
   val matrix: ParArray[A]

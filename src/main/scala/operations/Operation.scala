@@ -2,9 +2,9 @@ package operations
 
 import images.Kernel
 
-sealed trait Operation
+trait Operation
 
-sealed trait PointOperation[-A,+B] extends Operation {
+trait PointOperation[-A,+B] extends Operation {
   def runOn(pixel: A): B
 }
 
@@ -23,7 +23,7 @@ case class PointOp_3Channel[A,B](redOp: Int => A, greenOp: Int => A, blueOp: Int
   }
 }
 
-sealed trait NeighbourhoodOperation[-A,+B] extends Operation {
+trait NeighbourhoodOperation[-A,+B] extends Operation {
   def runOn(neighbourhood: List[A]): B
 }
 

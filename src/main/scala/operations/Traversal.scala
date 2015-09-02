@@ -6,7 +6,7 @@ import scala.collection.parallel.ParMap
 import scala.collection.parallel.mutable.ParArray
 import scala.reflect.ClassTag
 
-sealed trait Traversal
+trait Traversal
 
 case class PointTraverse() extends Traversal {
 

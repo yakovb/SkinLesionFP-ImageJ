@@ -5,7 +5,7 @@ import images.{Image, ParImage}
 import scala.collection.parallel.ParMap
 import scala.reflect.ClassTag
 
-sealed trait Transformation
+trait Transformation
 
 case class TransformSimple[A,B](image: Image[A],
                                 traversal: PointTraverse,
