@@ -47,6 +47,29 @@ object MyPipeline {
   def rgb_PointToThreeChannel =
     TransformSimple(_: Image[Int], PointTraverse(), getRed, getGreen, getBlue) transform
 
+  def rgbStep(pixel: Int) =
+    List(getRedDirect(pixel), getGreenDirect(pixel), getBlueDirect(pixel))
+
+  def xyzStep(pixel: Int) = {
+    pixel / 255f match {
+      case f if f > 0.04045 => Math.pow((f + 0.055) / 1.055, 2.4) * 100
+      case f => f / 12.92 * 100f
+    }
+  }
+  def makeX(rgb: List[Double]) = rgb match {
+    case List(r,g,b) => r * 0.4124 + g * 0.3576 + b * 0.1805
+  }
+  def makeY(rgb: List[Double]) = rgb match {
+    case List(r,g,b) => r * 0.2126 + g * 0.7152 + b * 0.0722
+  }
+  def makeZ(rgb: List[Double]) = rgb match {
+    case List(r,g,b) => r * 0.0193 + g * 0.1192 + b * 0.9505
+  }
+
+  def red_to_x = (rgbStep(_: Int) map xyzStep) andThen makeX
+  def red_to_y = (rgbStep(_: Int) map xyzStep) andThen makeY
+  def red_to_z = (rgbStep(_: Int) map xyzStep) andThen makeZ
+
 
 
 }
