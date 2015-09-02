@@ -15,6 +15,15 @@ object MyPipeline {
   def getGreen = PointOp_1Channel(getGreenDirect)
   def getBlue = PointOp_1Channel(getBlueDirect)
 
+  def rgb_2_grey = {
+
+    def toGreyOp =
+      PointOp_3Channel(_ * 0.2126, _ * 0.7152, _ * 0.0722) ((r,g,b) => (r+g+b).toByte)
+
+    TransformSimple(_: Image[Int], PointTraverse(), toGreyOp) transform
+  }
+
+
   def medianOneChannel(region: List[Int]) = {
     val sorted = region.sorted
     val l = sorted.length
