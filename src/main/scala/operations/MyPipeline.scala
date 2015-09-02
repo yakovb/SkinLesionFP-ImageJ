@@ -72,6 +72,20 @@ object MyPipeline {
     def yRef(y: Float) = (y / Yn).toFloat
     def zRef(z: Float) = (z / Zn).toFloat
 
-    
+    def getLab(xyzArray: Array[Float]) = xyzArray match {
+      case Array(x,y,z) => {
+        val (xr, yr, zr) = (xRef(x), yRef(y), zRef(z))
+        val fx = if (xr > EPSILON) Math.pow(xr, 1f/3f) else (KAPPA * xr + 16f) / 16f
+        val fy = if (yr > EPSILON) Math.pow(yr, 1f/3f) else (KAPPA * yr + 16f) / 16f
+        val fz = if (zr > EPSILON) Math.pow(zr, 1f/3f) else (KAPPA * zr + 16f) / 16f
+
+        val L = (116f * fy - 16f).toFloat
+        val a = (500f * (fx - fy)).toFloat
+        val b = (200f * (fy - fz)).toFloat
+        Array(L,a,b)
+      }
+    }
+    def labOp = PointOp_1Channel(getLab)
+    TransformSimple(_: Image[Array[Float]], PointTraverse(), labOp) transform
   }
 }
