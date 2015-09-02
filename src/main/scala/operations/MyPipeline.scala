@@ -43,22 +43,35 @@ object MyPipeline {
     TransformNeighbourhood(_: Image[Int], NeighbourTraverse(), medianOp) transform
   }
 
-  def rgb_to_xyz =
-    TransformSimple(_: Image[Int], PointTraverse(), xyzOp) transform
-
-  def xyzStep(pixel: Int) = {
-    pixel / 255f match {
-      case f if f > 0.04045 => (Math.pow((f + 0.055) / 1.055, 2.4) * 100).toFloat
-      case f => f / (12.92 * 100).toFloat
+  def rgb_to_xyz = {
+    def xyzStep(pixel: Int) = {
+      pixel / 255f match {
+        case f if f > 0.04045 => (Math.pow((f + 0.055) / 1.055, 2.4) * 100).toFloat
+        case f => f / (12.92 * 100).toFloat
+      }
     }
+    def xyzOp =
+      PointOp_3Channel(xyzStep, xyzStep, xyzStep)( (r,g,b) => {
+        val x = (r * 0.4124 + g * 0.3576 + b * 0.1805).toFloat
+        val y = (r * 0.2126 + g * 0.7152 + b * 0.0722).toFloat
+        val z = (r * 0.0193 + g * 0.1192 + b * 0.9505).toFloat
+        Array(x,y,z)
+      })
+    TransformSimple(_: Image[Int], PointTraverse(), xyzOp) transform
   }
 
-  def xyzOp =
-    PointOp_3Channel(xyzStep, xyzStep, xyzStep)( (r,g,b) => {
-      val x = (r * 0.4124 + g * 0.3576 + b * 0.1805).toFloat
-      val y = (r * 0.2126 + g * 0.7152 + b * 0.0722).toFloat
-      val z = (r * 0.0193 + g * 0.1192 + b * 0.9505).toFloat
-      Array(x,y,z)
-      })
 
+  def xyz_to_Lab = {
+    val EPSILON = 0.008856
+    val KAPPA = 909.3
+    val Xn = 0.9642
+    val Yn = 1.0
+    val Zn = 0.8249
+
+    def xRef(x: Float) = (x / Xn).toFloat
+    def yRef(y: Float) = (y / Yn).toFloat
+    def zRef(z: Float) = (z / Zn).toFloat
+
+    
+  }
 }
