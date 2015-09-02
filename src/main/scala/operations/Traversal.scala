@@ -30,8 +30,8 @@ case class BlockTraverse() extends Traversal {
 
     val blockSize = blockOps.size
     (for (block <- im.matrix.toIterator grouped blockSize)
-      yield (for (i <- 0 until blockSize)
-        yield blockOps(i) runOn block(i))   toParArray).toParArray.flatten
+      yield for (i <- 0 until blockSize)
+        yield blockOps(i) runOn block(i)).toParArray.flatten
   }
 
   def traverseAndReduce[A,B,C <: AnyVal : ClassTag](im: Image[A],
