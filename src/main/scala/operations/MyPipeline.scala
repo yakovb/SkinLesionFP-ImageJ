@@ -150,4 +150,24 @@ object MyPipeline {
       labArray <- window
     }  yield labArray(index)
 
+
+  def distanceImage =
+    (im: Image[Array[Float]], med: Array[Float]) =>
+    TransformSimple(im, PointTraverse(), PointOpDifference(med)) transform
+  
+  case class PointOpDifference(medians: Array[Float])
+    extends PointOperation[Array[Float], Float] {
+
+    override def runOn(pixels: Array[Float]): Float =
+      distanceCalc(pixels, medians)
+
+    private def distanceCalc(labPixels: Array[Float], medians: Array[Float]) = {
+      require(labPixels.length == medians.length)
+      val pairs = labPixels zip medians
+      val diffs = pairs map (p => Math.pow(p._1 - p._2, 2))
+      Math.sqrt(diffs.sum).toFloat
+    }
+
+  }
+
 }
