@@ -1,8 +1,9 @@
+import dermatological.binary_ops.BinaryImage._
 import ij.ImagePlus
 import ij.plugin.filter.PlugInFilter
 import ij.plugin.filter.PlugInFilter._
 import ij.process.ImageProcessor
-import operations.{InteropImageJ, MyPipeline}
+import operations.InteropImageJ
 
 class Otsu_Threshold extends PlugInFilter {
   override def setup(arg: String, imp: ImagePlus): Int =
@@ -10,7 +11,7 @@ class Otsu_Threshold extends PlugInFilter {
 
   override def run(ip: ImageProcessor): Unit = {
     val src = InteropImageJ.getByteParImage(ip)
-    val binary = MyPipeline.otsuThreshold(src)
+    val binary = otsuThreshold(src)
     InteropImageJ.makeImagePlus("Binary image", InteropImageJ.makeGreyProcessor(binary)) show()
   }
 }
