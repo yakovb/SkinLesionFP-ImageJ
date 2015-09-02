@@ -7,11 +7,8 @@ object MyPipeline {
   def getGreen(pixel: Int) = (pixel >> 8) & 0xff
   def getBlue(pixel: Int) = pixel & 0xff
   def combineRgb(rgbList: List[Int]) = rgbList match {
-    case List(red,green,blue) =>
-      val r = (red << 16) & 0xff
-      val g = (green << 8) & 0xff
-      val b = blue  & 0xff
-      r + g + b
+    case List(r,g,b) =>
+      ((r & 0xff) << 16) + ((g & 0xff) << 8) + (b & 0xff)
   }
 
   def medianOneChannel(region: List[Int]) = {
@@ -25,7 +22,7 @@ object MyPipeline {
     val reds = region map getRed
     val greens = region map getGreen
     val blues = region map getBlue
-    List(reds,blues,greens)
+    List(reds,greens,blues)
   }
 
 
@@ -34,7 +31,7 @@ object MyPipeline {
     combineRgb(medians)
   }
 
-  def medianOp = NonLinearFilterNoKernel(9, medianThreeChannel)
+  def medianOp = NonLinearFilterNoKernel(3, medianThreeChannel)
 
   def medianFilter = TransformNeighbourhood(_: Image[Int], NeighbourTraverse(), medianOp) transform
 }
