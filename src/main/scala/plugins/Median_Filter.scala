@@ -9,10 +9,12 @@ class Median_Filter extends PlugInFilter {
   DOES_RGB
 
   override def run(ip: ImageProcessor): Unit = {
+    import InteropImageJ._
     import operations.MyPipeline._
+
     val src = InteropImageJ.getIntParImage(ip)
-    val result = medianFilter(src)
-    val ijResult = InteropImageJ.makeColourImage("Median filtered", result)
+    val resultIm = medianFilter(src)
+    val ijResult = makeImagePlus("median filtered", makeColourProcessor(resultIm))
     ijResult show()
   }
 }
