@@ -7,7 +7,7 @@ object FillHoles {
 
   val TEMPCOLOUR = 100.toByte
   val WHITE = 255.toByte
-  val BLACK = 255.toByte
+  val BLACK = 0.toByte
 
   def fillHoles = (im: Image[Byte]) =>
     FillHolesTransform(im, WHITE, BLACK) transform
