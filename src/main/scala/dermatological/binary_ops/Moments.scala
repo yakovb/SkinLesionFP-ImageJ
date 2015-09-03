@@ -3,7 +3,7 @@ package dermatological.binary_ops
 import images.Image
 import operations.{Transformation, Traversal}
 
-object Moments {
+case class Moments(im: Image[Byte]) {
 
   val m00 = (r: Int, c: Int) => 1
   val m10 = (r: Int, c: Int) => c
@@ -14,7 +14,7 @@ object Moments {
   val mFuncList = List(m00,m10,m01,m11,m20,m02)
   val mNames = List("m00", "m10", "m01", "m11", "m20", "m02")
 
-  def getCentralMoments = (im: Image[Byte]) =>
+  def getCentralMoments =
     MomentTransform(im, MomentTraverse()) transform
 }
 
@@ -47,7 +47,6 @@ case class MomentTraverse() extends Traversal {
 
 
 case class MomentTransform(im: Image[Byte], mTraverse: MomentTraverse) extends Transformation {
-  import Moments._
   
   def transform = {
     val moments = mTraverse traverse (im, mFuncList, mNames)
