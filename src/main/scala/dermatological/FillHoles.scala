@@ -5,13 +5,13 @@ import operations.Transformation
 
 object FillHoles {
 
-  def fillHoles = (im: Image[Byte]) =>
-    FillHolesTransform(im) transform
+  val TEMPCOLOUR = 100.toByte
+  val WHITE = 255.toByte
+  val BLACK = 255.toByte
 
-  case class FillHolesTransform(im: Image[Byte]) extends Transformation {
-    val WHITE = 255.toByte
-    val TEMPCOLOUR = 100.toByte
-    val BLACK = 0.toByte
+  def fillHoles = (im: Image[Byte]) =>
+    FillHolesTransform(im, WHITE, BLACK) transform
+  case class FillHolesTransform(im: Image[Byte], colourToFill: Byte, leaveAloneColour: Byte) extends Transformation {
 
     def transform = {
       val tempArr = floodFillWithTempColour(im.matrix.toArray, 0, 0)
@@ -24,7 +24,7 @@ object FillHoles {
     private def floodFillWithTempColour(source: Array[Byte], rowStart: Int, colStart: Int): Array[Byte] = {
       val array = new Array[Byte](im.height * im.width)
       im.matrix.copyToArray(array)
-      array(0) = WHITE // starting pixel
+      array(0) = colourToFill // starting pixel
       val stack = scala.collection.mutable.Stack[(Int,Int)]()  //stack stores points as (row, column)
       stack.push((rowStart, colStart))
 
@@ -35,9 +35,9 @@ object FillHoles {
         var westColEnd = westColStart
         var eastColEnd = eastColStart
 
-        while (westColEnd >= 0 && array(calculateIndex(row,westColEnd)) == WHITE) {westColEnd -= 1}
+        while (westColEnd >= 0 && array(calculateIndex(row,westColEnd)) == colourToFill) {westColEnd -= 1}
         westColEnd += 1 // correct overshoot
-        while (eastColEnd < im.width && array(calculateIndex(row,eastColEnd)) == WHITE) {eastColEnd += 1}
+        while (eastColEnd < im.width && array(calculateIndex(row,eastColEnd)) == colourToFill) {eastColEnd += 1}
         eastColEnd -= 1 // correct overshoot
 
         if (westColEnd != eastColEnd) {
@@ -45,8 +45,8 @@ object FillHoles {
             array(calculateIndex(row, i)) = TEMPCOLOUR
             val testNorth = row - 1
             val testSouth = row + 1
-            if (testNorth >= 0 && array(calculateIndex(testNorth, i)) == WHITE) stack.push((testNorth, i))
-            if (testSouth < im.height && array(calculateIndex(testSouth, i)) == WHITE) stack.push((testSouth, i))
+            if (testNorth >= 0 && array(calculateIndex(testNorth, i)) == colourToFill) stack.push((testNorth, i))
+            if (testSouth < im.height && array(calculateIndex(testSouth, i)) == colourToFill) stack.push((testSouth, i))
           }
         }
       }
@@ -59,7 +59,7 @@ object FillHoles {
         c <- 0 until im.width
       } {
         val oldColour = array(calculateIndex(r,c))
-        val newColour = if (oldColour == TEMPCOLOUR) WHITE else BLACK
+        val newColour = if (oldColour == TEMPCOLOUR) colourToFill else leaveAloneColour
         array(calculateIndex(r,c)) = newColour
       }
       array
