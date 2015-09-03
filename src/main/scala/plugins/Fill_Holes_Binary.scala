@@ -1,4 +1,4 @@
-import dermatological.FillHoles
+import dermatological.HolesAndSpecs
 import ij.ImagePlus
 import ij.plugin.filter.PlugInFilter
 import ij.plugin.filter.PlugInFilter._
@@ -11,7 +11,7 @@ class Fill_Holes_Binary extends PlugInFilter {
 
   override def run(ip: ImageProcessor): Unit = {
     val src = getByteParImage(ip)
-    val filled = FillHoles.fillHoles (src)
+    val filled = HolesAndSpecs.fillHoles (src)
     makeImagePlus("Filled holes", makeGreyProcessor(filled)) show()
   }
 }

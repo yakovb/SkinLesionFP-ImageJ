@@ -1,27 +1,39 @@
 package dermatological
 
+import dermatological.binary_ops.Moments
 import images.{Image, ParImage}
 import operations.Transformation
 
-object FillHoles {
+object HolesAndSpecs {
 
   val TEMPCOLOUR = 100.toByte
   val WHITE = 255.toByte
   val BLACK = 0.toByte
 
   def fillHoles = (im: Image[Byte]) =>
-    FillHolesTransform(im, WHITE, BLACK) transform
-  case class FillHolesTransform(im: Image[Byte], colourToFill: Byte, leaveAloneColour: Byte) extends Transformation {
+    FillHolesTransform(im, WHITE, BLACK, (0,0)) transform
+
+  def removeSpecs = (im: Image[Byte]) => {
+    val centX = Moments.getCentralMoments(im)("centroidX").round.toInt
+    val centY = Moments.getCentralMoments(im)("centroidY").round.toInt
+    FillHolesTransform(im, BLACK, WHITE, (centX, centY)) transform
+  }
+
+  case class FillHolesTransform(im: Image[Byte],
+                                colourToFill: Byte,
+                                leaveAloneColour: Byte,
+                                startPointXY: (Int,Int)) extends Transformation {
 
     def transform = {
-      val tempArr = floodFillWithTempColour(im.matrix.toArray, 0, 0)
+      val tempArr = floodFillWithTempColour(im.matrix.toArray)
       val result = invertAndFill(tempArr)
       ParImage(result.par, im.width, im.height)
     }
 
     private def calculateIndex(row: Int, col: Int) = im.width * row + col
 
-    private def floodFillWithTempColour(source: Array[Byte], rowStart: Int, colStart: Int): Array[Byte] = {
+    private def floodFillWithTempColour(source: Array[Byte]): Array[Byte] = {
+      val (rowStart, colStart) = (startPointXY._2, startPointXY._1)
       val array = new Array[Byte](im.height * im.width)
       im.matrix.copyToArray(array)
       array(calculateIndex(rowStart, colStart)) = colourToFill // starting pixel
