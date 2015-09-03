@@ -36,7 +36,7 @@ class Mask_Test extends PlugInFilter {
       c <- 0 until width
     } {
       val i = calculateIndex(width,r,c)
-      if (!mask.contains(i)) workset(i) = 0
+      if (!mask.contains(i)) workset(i) = 255.toByte
     }
 
   }
