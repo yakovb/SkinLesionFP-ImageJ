@@ -14,7 +14,7 @@ case class Moments(im: Image[Byte]) {
   val mFuncList = List(m00,m10,m01,m11,m20,m02)
   val mNames = List("m00", "m10", "m01", "m11", "m20", "m02")
 
-  def getCentralMoments =
+  lazy val getCentralMoments: Map[String, Double] =
     MomentTransform(im, MomentTraverse()) transform
 }
 
