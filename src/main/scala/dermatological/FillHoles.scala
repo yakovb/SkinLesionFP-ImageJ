@@ -24,7 +24,7 @@ object FillHoles {
     private def floodFillWithTempColour(source: Array[Byte], rowStart: Int, colStart: Int): Array[Byte] = {
       val array = new Array[Byte](im.height * im.width)
       im.matrix.copyToArray(array)
-      array(0) = colourToFill // starting pixel
+      array(calculateIndex(rowStart, colStart)) = colourToFill // starting pixel
       val stack = scala.collection.mutable.Stack[(Int,Int)]()  //stack stores points as (row, column)
       stack.push((rowStart, colStart))
 
