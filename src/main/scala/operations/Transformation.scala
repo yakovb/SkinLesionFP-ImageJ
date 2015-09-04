@@ -3,9 +3,18 @@ package operations
 import images.{Image, ParImage}
 
 import scala.collection.parallel.ParMap
+import scala.collection.parallel.immutable.ParSet
 import scala.reflect.ClassTag
 
 trait Transformation
+
+case class TransformToMask[A](image: Image[A],
+                              traversal: MaskTraverse,
+                              test: A => Boolean) extends Transformation {
+
+  def transform: ParSet[A] =
+    traversal traverse (image, test)
+}
 
 case class TransformSimple[A,B](image: Image[A],
                                 traversal: PointTraverse,
