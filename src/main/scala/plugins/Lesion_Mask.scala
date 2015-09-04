@@ -1,6 +1,6 @@
 import dermatological.binary_ops.BinaryImage
 import dermatological.colour_ops.ColourOps
-import dermatological.{HolesAndSpecs, LesionMask, MaskBinary}
+import dermatological.{HolesAndSpecs, LesionMask, MaskMaking}
 import ij.ImagePlus
 import ij.plugin.filter.PlugInFilter
 import ij.plugin.filter.PlugInFilter._
@@ -19,7 +19,7 @@ class Lesion_Mask extends PlugInFilter {
         BinaryImage.otsuThreshold  andThen
         HolesAndSpecs.fillHoles  andThen
         HolesAndSpecs.removeSpecs  andThen
-        MaskBinary.toMask
+        MaskMaking.maskFromBinaryImage
 
     val mask = maskPipeline (src)
     val maskedImage = LesionMask.maskColourImage (src, mask)
