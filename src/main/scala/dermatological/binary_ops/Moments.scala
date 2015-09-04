@@ -33,7 +33,7 @@ case class MomentTransform(im: Image[Byte], mTraverse: MomentTraverse) extends T
     val centMomNames = List("c10", "c01", "c11", "c20", "c02")
 
     val centMoms = mTraverse centralMoments (im, centX, centY, centMomList, centMomNames)
-    centMoms + (("centroidX", centX), ("centroidY", centY))
+    centMoms + (("centroidX", centX), ("centroidY", centY), ("area", moments("m00").toDouble))
   }
 }
 
