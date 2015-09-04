@@ -3,10 +3,19 @@ package operations
 import images.Image
 
 import scala.collection.parallel.ParMap
+import scala.collection.parallel.immutable.ParSet
 import scala.collection.parallel.mutable.ParArray
 import scala.reflect.ClassTag
 
 trait Traversal
+
+case class MaskTraverse() extends Traversal {
+
+  def traverse[A](im: Image[A], predicate: A => Boolean): ParSet[A] = {
+    val resultArray = for (pixel <- im.matrix if predicate(pixel)) yield pixel
+    resultArray.toSet
+  }
+}
 
 case class PointTraverse() extends Traversal {
 
