@@ -23,6 +23,8 @@ class Mask_Test extends PlugInFilter {
     grey.autoThreshold()
 //    new ImagePlus("binary", grey).show()
     val binPix = grey.getPixels.asInstanceOf[Array[Byte]]
+    // up to here is only to get binary
+
     val mask = scala.collection.mutable.Set[Int]()
     for {
       r <- 0 until height

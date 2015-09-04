@@ -11,9 +11,13 @@ trait Traversal
 
 case class MaskTraverse() extends Traversal {
 
-  def traverse[A](im: Image[A], predicate: A => Boolean): ParSet[A] = {
-    val resultArray = for (pixel <- im.matrix if predicate(pixel)) yield pixel
-    resultArray.toSet
+  def traverse[A](im: Image[A], predicate: A => Boolean): ParSet[(Int,Int)] = {
+    val resultArray = for {
+      r <- 0 until im.height
+      c <- 0 until im.width
+      if predicate(im.matrix(im.width * r + c))
+    } yield (r,c)
+    resultArray.toSet.par
   }
 }
 

@@ -12,7 +12,7 @@ case class TransformToMask[A](image: Image[A],
                               traversal: MaskTraverse,
                               test: A => Boolean) extends Transformation {
 
-  def transform: ParSet[A] =
+  def transform: ParSet[(Int,Int)] =
     traversal traverse (image, test)
 }
 
