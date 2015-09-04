@@ -19,7 +19,7 @@ class Lesion_Mask extends PlugInFilter {
         BinaryImage.otsuThreshold  andThen
         HolesAndSpecs.fillHoles  andThen
         HolesAndSpecs.removeSpecs  andThen
-        MaskMaking.maskFromBinaryImage
+        MaskMaking.maskSetBinary
 
     val mask = maskPipeline (src)
     val maskedImage = LesionMask.maskColourImage (src, mask)
