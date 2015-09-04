@@ -98,7 +98,7 @@ case class Histo_3ChannelTraverse() extends Traversal {
     val greenHisto = oneChannelTraverse (pixel => (pixel >> 8) & 0xff) mapValues (_ size)
     val blueHisto = oneChannelTraverse (pixel => pixel & 0xff) mapValues (_ size)
 
-    Map("Red" -> redHisto, "Blue" -> blueHisto, "Green" -> greenHisto)
+    Map("Red" -> redHisto, "Green" -> greenHisto, "Blue" -> blueHisto)
   }
 
 
