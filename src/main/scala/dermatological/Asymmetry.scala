@@ -32,7 +32,7 @@ object Asymmetry {
       
       val result = PointTraverse() traverse(im, PointOp_1Channel((_:Byte) => 255.toByte))
       for {
-        r <- 0 to centroidY
+        r <- 0 until centroidY
         c <- 0 until im.width
         if im.matrix(resolveIndex(r,c)) == 0
       } {
