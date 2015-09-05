@@ -13,7 +13,7 @@ object MaskMaking {
     TransformToMask(im, MaskTraverse(), (_: Byte)  == BLACK_BYTE) transform
 
   def maskSetColour: (Image[Int]) => ParSet[(Int, Int)] = (im: Image[Int]) =>
-    TransformToMask(im, MaskTraverse(), (_: Int) == WHITE_INT) transform
+    TransformToMask(im, MaskTraverse(), (_: Int) != WHITE_INT) transform
   
   def maskArrayColour = (im: Image[Int]) => {
     val maskSet = maskSetColour(im)
