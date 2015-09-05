@@ -24,7 +24,7 @@ object HolesAndSpecs {
                                 leaveAloneColour: Byte,
                                 startPointXY: (Int,Int)) extends Transformation {
 
-    def transform = {
+    def transform: Image[Byte] = {
       val tempArr = floodFillWithTempColour(im.matrix.toArray)
       val result = invertAndFill(tempArr)
       ParImage(result.par, im.width, im.height)
