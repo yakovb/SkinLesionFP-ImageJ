@@ -12,7 +12,7 @@ object Perimeter {
       TransformNeighbourhood(im, NeighbourTraverse(), markPerimeterOp) transform
 
   def countPerimeter = (im: Image[Byte]) =>
-    TransformNeighbourhood(im, NeighbourTraverse(), countPerimeterOp) transform
+    (TransformNeighbourhood(im, NeighbourTraverse(), countPerimeterOp) transform).matrix.count(_ == true)
 
   def markPerimeterOp =
     NonLinearFilterNoKernel(3, markBorderPixFunction)
