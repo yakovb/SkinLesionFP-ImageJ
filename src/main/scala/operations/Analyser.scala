@@ -38,6 +38,7 @@ case class Analyser(directory: String) {
     val colourVarMap = ColourVariegation.getVariegationMeasures (original)
 
     Map(
+      imageFile.takeRight(6) -> 0f,
       "Asymmetry" -> asymmetryMeasure.toFloat,
       "Circularity" -> circularityMeasure.toFloat,
       "RedVariegation" -> colourVarMap("Red").toFloat,
@@ -47,7 +48,7 @@ case class Analyser(directory: String) {
 
 }
 
-object Testy extends App {
+object RunBulkAnalysis extends App {
   val analyser = Analyser("/home/yakov/Dropbox/Birkbeck/Project/MoleChecker/Moles/Mine/Input")
   val results = analyser.getResults
   var output = new StringBuilder("Feature-Descriptor,Measure\n")
