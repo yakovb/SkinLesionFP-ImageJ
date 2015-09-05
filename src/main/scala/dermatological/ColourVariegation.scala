@@ -7,7 +7,7 @@ import scala.collection.parallel.ParMap
 
 object ColourVariegation {
 
-  def doit = (im: Image[Int]) => {
+  def getVariegationMeasures = (im: Image[Int]) => {
     val mask = MaskMaking.maskArrayColour (im)
     val dummyImage = ParImage(mask, 1,mask.length)
     val histos: Map[String, ParMap[Int, Int]] = TransformThreeChannelToHistogram(dummyImage, Histo_3ChannelTraverse()) transform
