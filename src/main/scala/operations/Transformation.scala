@@ -62,7 +62,7 @@ case class TransformNeighbourhood[A,B](image: Image[A],
   def transform: Image[B] = {
     val imageBuffer = neighbourOp match {
       case LinearFilter(kernel, _,_,_) => kernel.width
-      case NonLinearFilterNoKernel(b, _) => b
+      case NonLinearFilter(b, _) => b
       case _ => throw new Exception(s"unrecognised neighbourhood operation: ${neighbourOp.toString}}")
     }
     val neighbourBuffer = imageBuffer / 2

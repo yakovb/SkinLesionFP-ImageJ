@@ -41,7 +41,7 @@ case class LinearFilter[A,B](kernel: Kernel,
   }
 }
 
-case class NonLinearFilterNoKernel[A,B](neighbourHoodSize: Int, f: List[A] => B) extends NeighbourhoodOperation[A,B] {
+case class NonLinearFilter[A,B](neighbourHoodSize: Int, f: List[A] => B) extends NeighbourhoodOperation[A,B] {
   require(neighbourHoodSize > 1, "neighbourhood size must be greater than one, otherwise use a point operation")
 
   override def runOn(neighbourhood: List[A]): B =

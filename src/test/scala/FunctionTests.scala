@@ -102,7 +102,7 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
     forAll(allIntImagesTable) { image =>
       an [IllegalArgumentException] should be thrownBy {
         TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
-          NonLinearFilterNoKernel(0, lst => lst.max)) transform
+          NonLinearFilter(0, lst => lst.max)) transform
       }
     }
   }
@@ -120,7 +120,7 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
     forAll(allIntImagesTable) { image =>
       an [IllegalArgumentException] should be thrownBy {
         TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
-          NonLinearFilterNoKernel(1, lst => lst.max)) transform
+          NonLinearFilter(1, lst => lst.max)) transform
       }
     }
   }
@@ -152,7 +152,7 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
     "by 2 pixels ") {
     forAll(allIntImagesTable) { image =>
       val newImage = TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
-        NonLinearFilterNoKernel(3, _ => 1)) transform
+        NonLinearFilter(3, _ => 1)) transform
       val (newLength, newWidth, newHeigh) = (newImage.matrix.length, newImage.width, newImage.height)
       val (oldLength, oldWidth, oldHeight) = (image.matrix.length, image.width, image.height)
 
@@ -165,7 +165,7 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
     "cropped original second row") {
     forAll(colourIntImagesTable) { image =>
       val newImage = TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
-        NonLinearFilterNoKernel(3, l => l(l.length / 2))) transform
+        NonLinearFilter(3, l => l(l.length / 2))) transform
       val newFirstRow = newImage.matrix.take(newImage.width)
       val oldCroppedSecondRow = image.matrix.slice(image.width, image.width + image.width).drop(1).init
       newFirstRow should equal (oldCroppedSecondRow)
@@ -176,7 +176,7 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
     "should be zero") {
     forAll(colourIntImagesTable) { image =>
       val newImage = TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
-        NonLinearFilterNoKernel(3, _ => 0)) transform;
+        NonLinearFilter(3, _ => 0)) transform;
       newImage.matrix.sum should equal (0)
     }
   }
@@ -218,7 +218,7 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
     "by 4 pixels ") {
     forAll(allIntImagesTable) { image =>
       val newImage = TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
-        NonLinearFilterNoKernel(9, _ => 1)) transform
+        NonLinearFilter(9, _ => 1)) transform
       val (newLength, newWidth, newHeigh) = (newImage.matrix.length, newImage.width, newImage.height)
       val (oldLength, oldWidth, oldHeight) = (image.matrix.length, image.width, image.height)
 
@@ -231,7 +231,7 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
     "cropped original fifth row") {
     forAll(colourIntImagesTable) { image =>
       val newImage = TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
-        NonLinearFilterNoKernel(9, l => l(l.length / 2))) transform
+        NonLinearFilter(9, l => l(l.length / 2))) transform
       val newFirstRow = newImage.matrix.take(newImage.width)
       val oldCroppedSecondRow = image.matrix.slice(image.width * 4, image.width * 4 + image.width).drop(4).reverse.drop(4).reverse
       newFirstRow should equal (oldCroppedSecondRow)
@@ -242,7 +242,7 @@ class FunctionTests extends PropSpec with TableDrivenPropertyChecks with Matcher
     "should be zero") {
     forAll(colourIntImagesTable) { image =>
       val newImage = TransformNeighbourhood[Int,Int](image, NeighbourTraverse(),
-        NonLinearFilterNoKernel(9, _ => 0)) transform;
+        NonLinearFilter(9, _ => 0)) transform;
       newImage.matrix.sum should equal (0)
     }
   }

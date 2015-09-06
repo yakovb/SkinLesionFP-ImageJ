@@ -1,7 +1,7 @@
 package dermatological
 
 import images.Image
-import operations.{NeighbourTraverse, NonLinearFilterNoKernel, TransformNeighbourhood}
+import operations.{NeighbourTraverse, NonLinearFilter, TransformNeighbourhood}
 
 object Perimeter {
   val WHITE = 255.toByte
@@ -15,10 +15,10 @@ object Perimeter {
     (TransformNeighbourhood(im, NeighbourTraverse(), countPerimeterOp) transform).matrix.count(_ == true) * .95
 
   def markPerimeterOp =
-    NonLinearFilterNoKernel(3, markBorderPixFunction)
+    NonLinearFilter(3, markBorderPixFunction)
 
   def countPerimeterOp =
-    NonLinearFilterNoKernel(3, isBorderPixFunction)
+    NonLinearFilter(3, isBorderPixFunction)
 
   def markBorderPixFunction = (nhood: List[Byte]) =>
     if (nhood(4) == BLACK && nhood.contains(WHITE)) TEMPCOLOUR else nhood(4)

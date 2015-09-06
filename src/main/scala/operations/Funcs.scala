@@ -24,7 +24,7 @@ object Funcs {
     LinearFilter[Byte,Byte](Kernel(List(1,2,1,2,4,2,1,2,1),3,3), byte_2_float, _.toByte, 1f/16)
 
   def medianFilter =
-    NonLinearFilterNoKernel[Byte,Byte](3, region => {
+    NonLinearFilter[Byte,Byte](3, region => {
       val sorted = region.sorted
       val l = sorted.length
       if (l % 2 == 0) ((sorted(l/2) + sorted(l/2 + 1)) / 2).toByte

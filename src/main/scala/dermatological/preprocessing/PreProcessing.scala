@@ -1,9 +1,8 @@
 package dermatological.preprocessing
 
-import dermatological.colour_ops.RGBaccess
 import dermatological.colour_ops.RGBaccess._
 import images.Image
-import operations.{NeighbourTraverse, NonLinearFilterNoKernel, TransformNeighbourhood}
+import operations.{NeighbourTraverse, NonLinearFilter, TransformNeighbourhood}
 
 object PreProcessing {
 
@@ -20,7 +19,7 @@ object PreProcessing {
       val medians = splitRgbRegion(mixedRegion) map medianOneChannel
       combineRgbDirect(medians)
     }
-    def medianOp = NonLinearFilterNoKernel(3, medianThreeChannel)
+    def medianOp = NonLinearFilter(3, medianThreeChannel)
     TransformNeighbourhood(_: Image[Int], NeighbourTraverse(), medianOp) transform
   }
 
