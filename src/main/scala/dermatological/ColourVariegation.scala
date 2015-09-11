@@ -28,5 +28,5 @@ object ColourVariegation {
   histo.foldLeft(0.0){ case (sum, (pixVal, count)) => sum + (pixVal * count) } / histo.values.sum.toDouble
 
   private def getMax(histo: ParMap[Int,Int]) =
-    histo.values.max
+    histo.toList.sortWith((p1,p2) => p1._2 > p2._2).head._1
 }

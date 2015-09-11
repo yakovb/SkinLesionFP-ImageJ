@@ -35,15 +35,17 @@ case class Analyser(directory: String) {
     val areaMeasure = Moments.getCentralMoments (binary) ("area")
     val circularityMeasure = 4 * Math.PI * areaMeasure / Math.pow(perimeterMeasure, 2)
 
-    val colourVarMap = ColourVariegation.getVariegationMeasures (original)
+    val mask = MaskMaking.maskSetBinary (binary)
+    val maskedImage = LesionMask.maskColourImage (original, mask)
+    val colourVarMap = ColourVariegation.getVariegationMeasures (maskedImage)
 
     Map(
-      imageFile.takeRight(6) -> 0f,
+      " File: "+imageFile.takeRight(6) -> 0f,
       "Asymmetry" -> asymmetryMeasure.toFloat,
-      "Circularity" -> circularityMeasure.toFloat,
-      "RedVariegation" -> colourVarMap("Red").toFloat,
-      "GreenVariegation" -> colourVarMap("Green").toFloat,
-      "BlueVariegation" -> colourVarMap("Blue").toFloat )
+      "Border Irreg." -> circularityMeasure.toFloat,
+      "Red Variegation" -> colourVarMap("Red").toFloat,
+      "Green Variegation" -> colourVarMap("Green").toFloat,
+      "Blue Variegation" -> colourVarMap("Blue").toFloat )
   }
 
 }
@@ -54,8 +56,8 @@ object RunBulkAnalysis extends App {
   var output = new StringBuilder("Feature-Descriptor,Measure\n")
   for {
     map <- results.toList
-    (k,v) <- map
+    (k,v) <- map.toList.sorted
   } output.append(s"$k,$v\n")
-  Files.write(Paths.get("/home/yakov/Dropbox/Birkbeck/Project/MoleChecker/Moles/Mine/output.csv"),
+  Files.write(Paths.get("/home/yakov/Dropbox/Birkbeck/Project/MoleChecker/Moles/Mine/Input/output.csv"),
     output.toString().getBytes(StandardCharsets.UTF_8))
 }
