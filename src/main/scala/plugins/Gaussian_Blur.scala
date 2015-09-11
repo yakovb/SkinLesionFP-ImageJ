@@ -1,9 +1,8 @@
+import core.{Funcs, NeighbourTraverse, ParImage, TransformNeighbourhood}
 import ij.ImagePlus
 import ij.plugin.filter.PlugInFilter
 import ij.plugin.filter.PlugInFilter._
 import ij.process.{ByteProcessor, ImageProcessor}
-import images.ParImage
-import operations.{Funcs, NeighbourTraverse, TransformNeighbourhood}
 
 class Gaussian_Blur extends PlugInFilter {
   override def setup(arg: String, imp: ImagePlus): Int =

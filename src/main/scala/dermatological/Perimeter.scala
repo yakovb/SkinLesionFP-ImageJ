@@ -1,7 +1,6 @@
 package dermatological
 
-import images.Image
-import operations.{NeighbourTraverse, NonLinearFilter, TransformNeighbourhood}
+import core.{Image, NeighbourTraverse, NonLinearFilter, TransformNeighbourhood}
 
 object Perimeter {
   val WHITE = 255.toByte

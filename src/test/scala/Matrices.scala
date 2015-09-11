@@ -1,4 +1,4 @@
-import images.{Image, ParImage}
+import core.{Image, ParImage}
 
 import scala.io.Source
 
@@ -19,9 +19,3 @@ class Matrices {
     ParImage(numLines.flatten.par, dim, dim)
   }
 }
-//
-//object MTest extends App {
-//  val m = new Matrices
-//  val z = m.getIntImages.head
-//  z.matrix.foreach(println)
-//}

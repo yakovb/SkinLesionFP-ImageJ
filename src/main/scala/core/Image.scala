@@ -1,4 +1,4 @@
-package images
+package core
 
 import scala.collection.parallel.mutable.ParArray
 

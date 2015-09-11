@@ -1,6 +1,4 @@
-package operations
-
-import images.Image
+package core
 
 import scala.collection.parallel.ParMap
 import scala.collection.parallel.immutable.ParSet

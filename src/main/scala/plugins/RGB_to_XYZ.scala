@@ -1,9 +1,9 @@
+import core.InteropImageJ
 import dermatological.colour_ops.ColourOps._
 import ij.plugin.filter.PlugInFilter
 import ij.plugin.filter.PlugInFilter._
 import ij.process.ImageProcessor
 import ij.{IJ, ImagePlus}
-import operations.InteropImageJ
 
 class RGB_to_XYZ extends PlugInFilter {
   override def setup(arg: String, imp: ImagePlus): Int =

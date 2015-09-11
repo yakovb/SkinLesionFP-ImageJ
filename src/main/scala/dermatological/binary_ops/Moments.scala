@@ -1,7 +1,6 @@
 package dermatological.binary_ops
 
-import images.Image
-import operations.{Transformation, Traversal}
+import core.{Image, Transformation, Traversal}
 
 object Moments {
   def getCentralMoments = (im: Image[Byte]) =>

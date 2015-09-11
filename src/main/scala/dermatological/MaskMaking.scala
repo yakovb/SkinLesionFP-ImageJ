@@ -1,7 +1,6 @@
 package dermatological
 
-import images.Image
-import operations.{MaskTraverse, TransformToMask}
+import core.{Image, MaskTraverse, TransformToMask}
 
 import scala.collection.parallel.immutable.ParSet
 

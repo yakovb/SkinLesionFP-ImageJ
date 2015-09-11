@@ -1,8 +1,7 @@
-package dermatological.preprocessing
+package dermatological
 
+import core.{Image, NeighbourTraverse, NonLinearFilter, TransformNeighbourhood}
 import dermatological.colour_ops.RGBaccess._
-import images.Image
-import operations.{NeighbourTraverse, NonLinearFilter, TransformNeighbourhood}
 
 object PreProcessing {
 

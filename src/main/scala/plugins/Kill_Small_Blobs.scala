@@ -1,9 +1,9 @@
+import core.InteropImageJ._
 import dermatological.HolesAndSpecs
 import ij.ImagePlus
 import ij.plugin.filter.PlugInFilter
 import ij.plugin.filter.PlugInFilter._
 import ij.process.ImageProcessor
-import operations.InteropImageJ._
 
 class Kill_Small_Blobs extends PlugInFilter {
   override def setup(arg: String, imp: ImagePlus): Int =

@@ -1,7 +1,6 @@
 package dermatological
 
-import images.{Image, ParImage}
-import operations.{Histo_3ChannelTraverse, TransformThreeChannelToHistogram}
+import core.{Histo_3ChannelTraverse, Image, ParImage, TransformThreeChannelToHistogram}
 
 import scala.collection.parallel.ParMap
 

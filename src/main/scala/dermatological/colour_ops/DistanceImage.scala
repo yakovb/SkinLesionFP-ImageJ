@@ -1,7 +1,6 @@
 package dermatological.colour_ops
 
-import images.Image
-import operations._
+import core._
 
 object DistanceImage {
 

@@ -1,6 +1,6 @@
 package dermatological.colour_ops
 
-import operations.PointOp_1Channel
+import core.PointOp_1Channel
 
 object RGBaccess {
 

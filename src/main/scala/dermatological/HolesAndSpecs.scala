@@ -1,8 +1,7 @@
 package dermatological
 
+import core.{Image, ParImage, Transformation}
 import dermatological.binary_ops.Moments
-import images.{Image, ParImage}
-import operations.Transformation
 
 object HolesAndSpecs {
 

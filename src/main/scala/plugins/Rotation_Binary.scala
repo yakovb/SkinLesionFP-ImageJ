@@ -1,9 +1,9 @@
+import core.InteropImageJ._
 import dermatological.Rotation
 import ij.ImagePlus
 import ij.plugin.filter.PlugInFilter
 import ij.plugin.filter.PlugInFilter._
 import ij.process.ImageProcessor
-import operations.InteropImageJ._
 
 class Rotation_Binary extends PlugInFilter {
   override def setup(arg: String, imp: ImagePlus): Int =

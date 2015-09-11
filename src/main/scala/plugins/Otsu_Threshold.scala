@@ -1,9 +1,9 @@
+import core.InteropImageJ
 import dermatological.binary_ops.BinaryImage._
 import ij.ImagePlus
 import ij.plugin.filter.PlugInFilter
 import ij.plugin.filter.PlugInFilter._
 import ij.process.ImageProcessor
-import operations.InteropImageJ
 
 class Otsu_Threshold extends PlugInFilter {
   override def setup(arg: String, imp: ImagePlus): Int =

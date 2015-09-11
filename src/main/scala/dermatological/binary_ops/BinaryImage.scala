@@ -1,7 +1,6 @@
 package dermatological.binary_ops
 
-import images.{Image, ParImage}
-import operations._
+import core._
 
 object BinaryImage {
 

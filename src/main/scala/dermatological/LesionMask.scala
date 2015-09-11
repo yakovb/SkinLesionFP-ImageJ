@@ -1,7 +1,6 @@
 package dermatological
 
-import images.{Image, ParImage}
-import operations.{Transformation, Traversal}
+import core.{Image, ParImage, Transformation, Traversal}
 
 import scala.collection.parallel.immutable.ParSet
 

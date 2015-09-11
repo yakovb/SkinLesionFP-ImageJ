@@ -1,6 +1,4 @@
-package operations
-
-import images.Kernel
+package core
 
 object Funcs {
 

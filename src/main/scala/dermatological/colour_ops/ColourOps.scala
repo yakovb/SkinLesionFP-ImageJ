@@ -1,7 +1,6 @@
 package dermatological.colour_ops
 
-import images.Image
-import operations.{PointOp_1Channel, PointOp_3Channel, PointTraverse, TransformSimple}
+import core._
 
 object ColourOps {
 

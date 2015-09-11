@@ -1,11 +1,11 @@
-package operations
+package core
 
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Paths}
 
 import dermatological._
-import dermatological.binary_ops.{BinaryImage, Moments}
+import dermatological.binary_ops.{Asymmetry, BinaryImage, Moments}
 import dermatological.colour_ops.ColourOps
 import ij.io.Opener
 

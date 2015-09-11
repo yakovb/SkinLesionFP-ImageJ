@@ -1,8 +1,6 @@
-package dermatological
+package dermatological.binary_ops
 
-import dermatological.binary_ops.Moments
-import images.{Image, ParImage}
-import operations._
+import core._
 
 import scala.collection.parallel.mutable.ParArray
 

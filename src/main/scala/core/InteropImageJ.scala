@@ -1,8 +1,7 @@
-package operations
+package core
 
 import ij.process.{ByteProcessor, ColorProcessor, FloatProcessor, ImageProcessor}
 import ij.{ImagePlus, ImageStack}
-import images.{Image, ParImage}
 
 object InteropImageJ {
 
@@ -18,7 +17,7 @@ object InteropImageJ {
   def makeColourProcessor(image: Image[Int]) =
     new ColorProcessor(image.width, image.height, image.matrix.toArray)
 
-  def makeFloatImage(image: Image[Float]) =
+  def makeFloatProcessor(image: Image[Float]) =
     new FloatProcessor(image.width, image.height, image.matrix.toArray)
 
   def makeImagePlus(title: String, ip: ImageProcessor) =

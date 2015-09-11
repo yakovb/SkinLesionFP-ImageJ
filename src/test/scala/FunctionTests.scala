@@ -1,5 +1,4 @@
-import images.Kernel
-import operations._
+import core._
 import org.scalatest.prop.TableDrivenPropertyChecks
 import org.scalatest.{Matchers, PropSpec}
 
