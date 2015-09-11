@@ -39,8 +39,10 @@ case class Analyser(directory: String) {
     val maskedImage = LesionMask.maskColourImage (original, mask)
     val colourVarMap = ColourVariegation.getVariegationMeasures (maskedImage)
 
+    val pathString = Paths.get(imageFile).getFileName.toString
+
     Map(
-      " File: "+imageFile.takeRight(6) -> 0f,
+      " File: " + pathString -> 0f,
       "Asymmetry" -> asymmetryMeasure.toFloat,
       "Border Irreg." -> circularityMeasure.toFloat,
       "Red Variegation" -> colourVarMap("Red").toFloat,
@@ -51,7 +53,13 @@ case class Analyser(directory: String) {
 }
 
 object RunBulkAnalysis extends App {
-  val analyser = Analyser("/home/yakov/Dropbox/Birkbeck/Project/MoleChecker/Moles/Mine/Input")
+  println("Welcome to the Skin Lesion analysis programme, written by Yakov Boglev for his Birkbeck MSc CS final project.")
+  println()
+  println("Please enter the full path of the directory holding the image you want to process.")
+  println("Make sure the folder contains images and that there is NO EXISTING output.csv file in it!")
+  val inputDirectory = scala.io.StdIn.readLine("> ")
+  val analyser = Analyser(inputDirectory)
+  println("\nprocessing...")
   val results = analyser.getResults
   var output = new StringBuilder("Feature-Descriptor,Measure\n")
   for {
@@ -60,4 +68,5 @@ object RunBulkAnalysis extends App {
   } output.append(s"$k,$v\n")
   Files.write(Paths.get("/home/yakov/Dropbox/Birkbeck/Project/MoleChecker/Moles/Mine/Input/output.csv"),
     output.toString().getBytes(StandardCharsets.UTF_8))
+  println("Complete. Check your folder for the output.")
 }
