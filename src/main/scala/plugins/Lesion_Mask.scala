@@ -1,7 +1,7 @@
 import core.InteropImageJ._
-import dermatological.binary_ops.BinaryImage
+import dermatological.binary_ops.{BinaryImage, HolesAndSpecs}
 import dermatological.colour_ops.ColourOps
-import dermatological.{HolesAndSpecs, LesionMask, MaskMaking}
+import dermatological.other_ops.{LesionMask, MaskMaking}
 import ij.ImagePlus
 import ij.plugin.filter.PlugInFilter
 import ij.plugin.filter.PlugInFilter._

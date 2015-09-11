@@ -4,9 +4,9 @@ import java.io.File
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Paths}
 
-import dermatological._
-import dermatological.binary_ops.{Asymmetry, BinaryImage, Moments}
-import dermatological.colour_ops.ColourOps
+import dermatological.binary_ops._
+import dermatological.colour_ops.{ColourOps, ColourVariegation}
+import dermatological.other_ops.{LesionMask, MaskMaking, Perimeter}
 import ij.io.Opener
 
 case class Analyser(directory: String) {

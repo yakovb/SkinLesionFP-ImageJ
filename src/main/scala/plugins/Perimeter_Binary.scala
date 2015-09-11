@@ -1,5 +1,5 @@
 import core.InteropImageJ._
-import dermatological.Perimeter
+import dermatological.other_ops.Perimeter
 import ij.ImagePlus
 import ij.plugin.filter.PlugInFilter
 import ij.plugin.filter.PlugInFilter._

@@ -1,4 +1,4 @@
-package dermatological
+package dermatological.other_ops
 
 import core.{Image, MaskTraverse, TransformToMask}
 

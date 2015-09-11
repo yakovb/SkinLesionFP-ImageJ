@@ -1,7 +1,6 @@
-package dermatological
+package dermatological.binary_ops
 
 import core.{Image, Operation, ParImage, Transformation}
-import dermatological.binary_ops.Moments
 
 object Rotation {
 

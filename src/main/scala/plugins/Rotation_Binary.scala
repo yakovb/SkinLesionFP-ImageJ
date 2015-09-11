@@ -1,5 +1,5 @@
 import core.InteropImageJ._
-import dermatological.Rotation
+import dermatological.binary_ops.Rotation
 import ij.ImagePlus
 import ij.plugin.filter.PlugInFilter
 import ij.plugin.filter.PlugInFilter._

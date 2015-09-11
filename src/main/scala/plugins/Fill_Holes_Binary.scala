@@ -1,5 +1,5 @@
 import core.InteropImageJ._
-import dermatological.HolesAndSpecs
+import dermatological.binary_ops.HolesAndSpecs
 import ij.ImagePlus
 import ij.plugin.filter.PlugInFilter
 import ij.plugin.filter.PlugInFilter._

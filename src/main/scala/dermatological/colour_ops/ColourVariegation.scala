@@ -1,6 +1,7 @@
-package dermatological
+package dermatological.colour_ops
 
 import core.{Histo_3ChannelTraverse, Image, ParImage, TransformThreeChannelToHistogram}
+import dermatological.other_ops.MaskMaking
 
 import scala.collection.parallel.ParMap
 
