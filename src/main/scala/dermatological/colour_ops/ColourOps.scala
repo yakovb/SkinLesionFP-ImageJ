@@ -2,8 +2,15 @@ package dermatological.colour_ops
 
 import core._
 
+/**
+ * Provides utility functions for colour transformations which can be used by callers
+ */
 object ColourOps {
 
+  /**
+   * Partially applied function; requires colour [[core.Image]] with [[scala.Int]] pixel array as input
+   * @return grey image
+   */
   def rgb_2_grey = {
     def toGreyOp =
       PointOp_3Channel(_ * 0.2126, _ * 0.7152, _ * 0.0722) ((r,g,b) => (r+g+b).toByte)
@@ -12,7 +19,11 @@ object ColourOps {
   }
 
 
-  def rgb_to_xyz = {
+  /**
+   * Partially applied function; requires colour [[core.Image]] with [[scala.Int]] pixel array as input
+   * @return image in the XYZ colour space with a pixel representing each channel as one element in a three-element [[scala.Float]] array
+   */
+  def rgb_to_xyz: (Image[Int]) => ParImage[Array[Float]] = {
     def xyzStep(pixel: Int) = {
       pixel / 255f match {
         case f if f > 0.04045 => (Math.pow((f + 0.055) / 1.055, 2.4) * 100).toFloat
@@ -29,7 +40,11 @@ object ColourOps {
     TransformSimple(_: Image[Int], PointTraverse(), xyzOp) transform
   }
 
-
+  /**
+   * Partially applied function; requires XYZ [[core.Image]] with a pixel representing each channel as one
+   * element in a three-element [[scala.Float]] array
+   * @return image in the CIE L*a*b* colour space
+   */
   def xyz_to_Lab = {
     val EPSILON = 0.008856
     val KAPPA = 909.3
