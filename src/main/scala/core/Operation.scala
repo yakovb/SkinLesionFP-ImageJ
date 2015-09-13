@@ -55,15 +55,36 @@ case class PointOp_3Channel[A,B](redOp: Int => A, greenOp: Int => A, blueOp: Int
   }
 }
 
+/** Base trait encapsulating operations on a single neighbourhood of pixels of A, returning a single pixel of B */
 trait NeighbourhoodOperation[-A,+B] extends Operation {
+
+  /**
+   * Abstract operation on a neighbourhood of pixels
+   * @param neighbourhood neighbourhood of pixels of type A
+   * @return pixel of type B
+   */
   def runOn(neighbourhood: List[A]): B
 }
 
+/**
+ * Convolution operation on a region of pixels with a specific kernel
+ * @param kernel matrix of [[scala.Float]] used in the convolution operation
+ * @param neighbourhoodConvert pre-processing function to convert pixels of A to [[scala.Float]]
+ * @param resultConvert post-processing operation to convert results of convolution to pixel of B
+ * @param normalizer scalar multiplier for the kernel
+ * @tparam A source pixel type
+ * @tparam B resulting pixel type
+ */
 case class LinearFilter[A,B](kernel: Kernel,
                              neighbourhoodConvert: A => Float,
                              resultConvert: Float => B,
                              normalizer: Float = 1.0f) extends NeighbourhoodOperation[A,B] {
 
+  /**
+   * Operation on a neighbourhood of pixels
+   * @param neighbourhood neighbourhood of pixels of type A
+   * @return pixel of type B
+   */
   override def runOn(neighbourhood: List[A]): B = {
     if (neighbourhood.size != (kernel.width * kernel.height)) throw new Exception("kernel and neighbourhood must be the same size")
     else {
@@ -73,9 +94,21 @@ case class LinearFilter[A,B](kernel: Kernel,
   }
 }
 
+/**
+ * Filter whose output is not a linear function of its inputs
+ * @param neighbourHoodSize length of side of square pixel neighbourhood
+ * @param f non-linear function applied to pixel neighbourhood
+ * @tparam A source pixel type
+ * @tparam B result pixel type
+ */
 case class NonLinearFilter[A,B](neighbourHoodSize: Int, f: List[A] => B) extends NeighbourhoodOperation[A,B] {
   require(neighbourHoodSize > 1, "neighbourhood size must be greater than one, otherwise use a point operation")
 
+  /**
+   * Operation on a neighbourhood of pixels
+   * @param neighbourhood neighbourhood of pixels of type A
+   * @return pixel of type B
+   */
   override def runOn(neighbourhood: List[A]): B =
     f (neighbourhood)
 }
