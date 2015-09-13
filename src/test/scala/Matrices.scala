@@ -3,7 +3,7 @@ import core.{Image, ParImage}
 import scala.io.Source
 
 class Matrices {
-  val root = "/home/yakov/src/SkinLesionFP-ImageJ/src/test/resources/"
+  val root = "SkinLesionFP-ImageJ/src/test/resources/"
   val greyList = List("allZeros.csv", "allOnes.csv", "allRand.csv", "lena_grayscale.csv")
   val colourList = List("colourBlue.csv", "colourGreen.csv", "colourRed.csv", "colourRandom.csv")
   val completeList = greyList ++ colourList
