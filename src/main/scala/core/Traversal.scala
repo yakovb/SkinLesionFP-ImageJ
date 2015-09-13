@@ -143,14 +143,33 @@ case class NeighbourTraverse() extends Traversal {
   }
 }
 
+/**
+ * Creates a histogram of pixel intensities from a source image with a single channel pixel array
+ */
 case class Histo_1ChannelTraverse() extends Traversal {
+
+  /**
+   * Maps pixel intensities to number of pixels in the pixel array with that intensity
+   * @param im source [[core.Image]]
+   * @tparam A source pixel type
+   * @return histogram of pixel intensities in the form of a [[scala.collection.parallel.ParMap]]
+   */
   def traverse[A](im: Image[A]): ParMap[A,Int] =
     im.matrix groupBy (pixel => pixel) mapValues (_ size)
 
 }
 
+/**
+ * Creates a histogram of pixel intensities from a source image with a three channel pixel array. Assumption is that
+ * the source [[core.Image]] will contain pixels of type [[scala.Int]] with red, green and blue colour channels packed inside
+ */
 case class Histo_3ChannelTraverse() extends Traversal {
 
+  /**
+   * For each colour channel, maps pixel intensities to number of pixels in the pixel array with that intensity
+   * @param im source [[core.Image]]
+   * @return [[scala.collection.Map]] of histograms for each colour channel in the form of a [[scala.collection.parallel.ParMap]]
+   */
   def traverse(im: Image[Int]): Map[String, ParMap[Int, Int]] = {
 
     def oneChannelTraverse(getPixelOp: Int => Int) =
@@ -162,6 +181,4 @@ case class Histo_3ChannelTraverse() extends Traversal {
 
     Map("Red" -> redHisto, "Green" -> greenHisto, "Blue" -> blueHisto)
   }
-
-
 }
