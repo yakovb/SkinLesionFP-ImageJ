@@ -108,9 +108,22 @@ case class BlockTraverse() extends Traversal {
   }
 }
 
-
+/**
+ * Creates a new pixel array by applying function to a neighbourhood of pixels
+ */
 case class NeighbourTraverse() extends Traversal {
 
+  /**
+   * Takes neighbourhoods of pixels and produces a single output pixel after applying a function to the neighbourhood. The result
+   * is a cropped image, the reduction in width and height equaling the length of the sides of the neighbourhood region
+   * @param im source [[core.Image]]
+   * @param op [[core.NeighbourhoodOperation]] to apply to each pixel neighbourhood
+   * @param verticalBuffer half the vertical size of the neighbourhood region. This amount is cropped from top and bottom of result image
+   * @param horizontalBuffer half the horizontal size of the neighbourhood region. This amount is cropped from left and right of result image
+   * @tparam A source pixel type
+   * @tparam B result pixel type
+   * @return a new pixel array of type [[scala.collection.parallel.mutable.ParArray]]
+   */
   def traverse[A,B](im: Image[A], op: NeighbourhoodOperation[A,B], verticalBuffer: Int, horizontalBuffer: Int): ParArray[B] = {
 
     val allNeighbourhoods =
