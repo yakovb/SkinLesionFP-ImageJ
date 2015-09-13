@@ -5,6 +5,9 @@ import ij.plugin.filter.PlugInFilter._
 import ij.process.ImageProcessor
 import ij.{IJ, ImagePlus}
 
+/**
+ * [[ij.plugin.filter.PlugInFilter]] that converts RGB image to CIE XYZ colour space
+ */
 class RGB_to_XYZ extends PlugInFilter {
   override def setup(arg: String, imp: ImagePlus): Int =
   DOES_ALL + DOES_STACKS
