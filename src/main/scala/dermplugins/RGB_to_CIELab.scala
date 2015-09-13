@@ -5,6 +5,9 @@ import ij.plugin.filter.PlugInFilter._
 import ij.process.ImageProcessor
 import ij.{IJ, ImagePlus}
 
+/**
+ * [[ij.plugin.filter.PlugInFilter]] that converts RGB image to CIE L*a*b* colour space
+ */
 class RGB_to_CIELab extends PlugInFilter {
   override def setup(arg: String, imp: ImagePlus): Int =
   DOES_ALL + DOES_STACKS
