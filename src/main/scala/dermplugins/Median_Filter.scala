@@ -5,6 +5,9 @@ import ij.plugin.filter.PlugInFilter
 import ij.plugin.filter.PlugInFilter._
 import ij.process.ImageProcessor
 
+/**
+ * [[ij.plugin.filter.PlugInFilter]] that shows median filtered colour image
+ */
 class Median_Filter extends PlugInFilter {
   override def setup(arg: String, imp: ImagePlus): Int =
   DOES_RGB
