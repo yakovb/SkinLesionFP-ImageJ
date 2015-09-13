@@ -92,7 +92,7 @@ case class BlockTraverse() extends Traversal {
    * @param blockOps list of [[core.PointOperation]]s to apply. Length of this list must match length of the pixel block
    * @param blockFold reduction operation taking a block of modified pixels to a single value
    * @tparam A source pixel type
-   * @tparam B intermediate pixel type (result type of blockFold)
+   * @tparam B intermediate pixel type (result type of blockOps)
    * @tparam C resulting value type
    * @return a new pixel array of type [[scala.collection.parallel.mutable.ParArray]]
    */
