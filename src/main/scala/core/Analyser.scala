@@ -9,9 +9,17 @@ import dermatological.colour_ops.{ColourOps, ColourVariegation}
 import dermatological.other_ops.{LesionMask, MaskMaking, Perimeter}
 import ij.io.Opener
 
+/**
+ * Utility class which takes a directory and runs a bulk dermatological analysis of the images contained in it
+ * @param directory location of source images
+ */
 case class Analyser(directory: String) {
 
-  def getResults = for (file <- new File(directory).listFiles().toIterator) yield {
+  /**
+   * @return [[scala.collection.Iterator]] of [[scala.collection.Map]]s mapping a feature descriptor to its resulting
+   *        measure for each image file
+   */
+  def getResults: Iterator[Map[String, Double]] = for (file <- new File(directory).listFiles().toIterator) yield {
     analyseImage(file.getAbsolutePath)
   }
 
@@ -52,6 +60,10 @@ case class Analyser(directory: String) {
 
 }
 
+/**
+ * Programme entry point. Shows welcome text and instructions on how to run a bulk analysis of skin lesion images.
+ * Outputs results as a CSV file written to the directory containing the skin lesion images.
+ */
 object RunBulkAnalysis extends App {
   println("Welcome to the Skin Lesion analysis programme, written by Yakov Boglev for his Birkbeck MSc CS final project.")
   println()
