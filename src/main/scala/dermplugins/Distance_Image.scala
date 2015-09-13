@@ -6,6 +6,9 @@ import ij.plugin.filter.PlugInFilter
 import ij.plugin.filter.PlugInFilter._
 import ij.process.ImageProcessor
 
+/**
+ * [[ij.plugin.filter.PlugInFilter]] that converts RGB image into a distance image as described in [[dermatological.colour_ops.DistanceImage]]
+ */
 class Distance_Image extends PlugInFilter {
   override def setup(arg: String, imp: ImagePlus): Int =
     DOES_ALL + DOES_STACKS
