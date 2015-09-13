@@ -31,7 +31,7 @@ case class MaskTraverse() extends Traversal {
 }
 
 /**
- * Creates a new [[core.Image]] by applying a function to all of its pixels
+ * Creates a new pixel array by applying a function to all pixels in a source [[core.Image]]'s array
  */
 case class PointTraverse() extends Traversal {
 
@@ -64,8 +64,19 @@ case class PointTraverse() extends Traversal {
   }
 }
 
+/**
+ * Creates a new pixel array by applying functions to blocks of two or more pixels consecutive in a source [[core.Image]]'s array
+ */
 case class BlockTraverse() extends Traversal {
 
+  /**
+   * Takes blocks of consecutive pixels and applies a list of functions to them (one function per pixel) until all pixels are traversed
+   * @param im source [[core.Image]]
+   * @param blockOps list of [[core.PointOperation]]s to apply. Length of this list must match length of the pixel block
+   * @tparam A source pixel type
+   * @tparam B result pixel type
+   * @return a new pixel array of type [[scala.collection.parallel.mutable.ParArray]]
+   */
   def traverse[A,B](im: Image[A], blockOps: List[PointOperation[A,B]]): ParArray[B] = {
 
     val blockSize = blockOps.size
@@ -74,6 +85,17 @@ case class BlockTraverse() extends Traversal {
         yield blockOps(i) runOn block(i)).toParArray.flatten
   }
 
+  /**
+   * Takes blocks of consecutive pixels and applies a list of functions to them (one function per pixel) and subsequently
+   * reduces the block of modified pixels into a single [[scala.AnyVal]]
+   * @param im source [[core.Image]]
+   * @param blockOps list of [[core.PointOperation]]s to apply. Length of this list must match length of the pixel block
+   * @param blockFold reduction operation taking a block of modified pixels to a single value
+   * @tparam A source pixel type
+   * @tparam B intermediate pixel type (result type of blockFold)
+   * @tparam C resulting value type
+   * @return a new pixel array of type [[scala.collection.parallel.mutable.ParArray]]
+   */
   def traverseAndReduce[A,B,C <: AnyVal : ClassTag](im: Image[A],
                                blockOps: List[PointOperation[A,B]],
                                 blockFold: Seq[B] => C): ParArray[C] = {
