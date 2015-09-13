@@ -7,7 +7,10 @@ import ij.plugin.filter.PlugInFilter
 import ij.plugin.filter.PlugInFilter._
 import ij.process.ImageProcessor
 
-class Lesion_Mask extends PlugInFilter {
+/**
+ * [[ij.plugin.filter.PlugInFilter]] that masks background skin from a colour image of a skin lesion
+ */
+class Colour_Lesion_Mask extends PlugInFilter {
   override def setup(arg: String, imp: ImagePlus): Int =
     DOES_ALL
 
