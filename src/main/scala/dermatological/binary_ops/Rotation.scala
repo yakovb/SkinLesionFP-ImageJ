@@ -2,14 +2,21 @@ package dermatological.binary_ops
 
 import core.{Image, Operation, ParImage, Transformation}
 
+/**
+ * Provides methods for rotating a binary image about the central axis of the image's object
+ */
 object Rotation {
 
+  /**
+   * Partially applied function; requires [[core.Image]] as input to complete
+   * @return binary image with depicted object rotated so that its major axis is horizontal
+   */
   def rotate = (im: Image[Byte]) => {
     val rotatedWithHoles = TransformRotate(im, RotationOp()) transform;
     HolesAndSpecs.fillHoles (rotatedWithHoles)
   }
 
-  case class TransformRotate(im: Image[Byte], rotationOp: RotationOp) extends Transformation {
+  private case class TransformRotate(im: Image[Byte], rotationOp: RotationOp) extends Transformation {
     val moments = Moments.getCentralMoments (im)
 
     def transform = {
@@ -31,7 +38,7 @@ object Rotation {
     }
   }
 
-  case class RotationOp() extends Operation {
+  private case class RotationOp() extends Operation {
 
     def runOn(x: Int, y: Int, angle: Double, centroidX: Int, centroidY: Int) = {
       val sine = Math.sin(angle)
