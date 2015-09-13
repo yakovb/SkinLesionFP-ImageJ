@@ -6,6 +6,9 @@ import ij.plugin.filter.PlugInFilter
 import ij.plugin.filter.PlugInFilter._
 import ij.process.ImageProcessor
 
+/**
+ * [[ij.plugin.filter.PlugInFilter]] that runs all steps in the dermatological pipeline and displays results
+ */
 class Analyser_Full extends PlugInFilter {
   override def setup(arg: String, imp: ImagePlus): Int =
     DOES_ALL
