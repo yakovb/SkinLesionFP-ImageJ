@@ -5,7 +5,10 @@ import ij.plugin.filter.PlugInFilter
 import ij.plugin.filter.PlugInFilter._
 import ij.process.ImageProcessor
 
-class Kill_Small_Blobs extends PlugInFilter {
+/**
+ * [[ij.plugin.filter.PlugInFilter]] that removes small blobs from a binary image
+ */
+class Remove_Small_Blobs extends PlugInFilter {
   override def setup(arg: String, imp: ImagePlus): Int =
     DOES_8G
 
