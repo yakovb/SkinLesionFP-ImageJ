@@ -1,5 +1,4 @@
 import core.InteropImageJ._
-import dermatological.other_ops.PreProcessing
 import dermatological.other_ops.PreProcessing._
 import ij.ImagePlus
 import ij.plugin.filter.PlugInFilter
