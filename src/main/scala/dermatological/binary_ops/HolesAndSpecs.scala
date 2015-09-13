@@ -2,22 +2,33 @@ package dermatological.binary_ops
 
 import core.{Image, ParImage, Transformation}
 
+/**
+ * Provides methods for filling holes and removing small specks from binary images
+ */
 object HolesAndSpecs {
 
-  val TEMPCOLOUR = 100.toByte
-  val WHITE = 255.toByte
-  val BLACK = 0.toByte
+  private val TEMPCOLOUR = 100.toByte
+  private val WHITE = 255.toByte
+  private val BLACK = 0.toByte
 
+  /**
+   * Partially applied function; requires [[core.Image]] as input to complete
+   * @return binary image with all holes (i.e. spaces bounded by internal contours) filled in black
+   */
   def fillHoles = (im: Image[Byte]) =>
     FillHolesTransform(im, WHITE, BLACK, (0,0)) transform
 
+  /**
+   * Partially applied function; requires [[core.Image]] as input to complete
+   * @return binary image will all small specks removed, leaving a single object remaining in the image
+   */
   def removeSpecs = (im: Image[Byte]) => {
     val centX = Moments.getCentralMoments(im)("centroidX").round.toInt
     val centY = Moments.getCentralMoments(im)("centroidY").round.toInt
     FillHolesTransform(im, BLACK, WHITE, (centX, centY)) transform
   }
 
-  case class FillHolesTransform(im: Image[Byte],
+  private case class FillHolesTransform(im: Image[Byte],
                                 colourToFill: Byte,
                                 leaveAloneColour: Byte,
                                 startPointXY: (Int,Int)) extends Transformation {
