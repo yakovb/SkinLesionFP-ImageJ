@@ -15,7 +15,7 @@ class Gaussian_Blur extends PlugInFilter {
     val src = InteropImageJ.getByteParImage(ip)
     val result = dermatological.other_ops.PreProcessing.gaussianBlurGreyImage (src)
     val ijResult = InteropImageJ.makeGreyProcessor(result)
-    InteropImageJ.makeImagePlus("Blurred image", ijResult)
+    InteropImageJ.makeImagePlus("Blurred image", ijResult) show()
   }
 
 }
