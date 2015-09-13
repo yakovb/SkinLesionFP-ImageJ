@@ -1,21 +1,21 @@
-import core.{Funcs, NeighbourTraverse, ParImage, TransformNeighbourhood}
+import core._
 import ij.ImagePlus
 import ij.plugin.filter.PlugInFilter
 import ij.plugin.filter.PlugInFilter._
-import ij.process.{ByteProcessor, ImageProcessor}
+import ij.process.ImageProcessor
 
+/**
+ * [[ij.plugin.filter.PlugInFilter]] that shows Gaussian blurred grey image
+ */
 class Gaussian_Blur extends PlugInFilter {
   override def setup(arg: String, imp: ImagePlus): Int =
-    DOES_8G + DOES_STACKS + SUPPORTS_MASKING
+    DOES_8G
 
   override def run(ip: ImageProcessor): Unit = {
-    val pixels = ip.getPixels.asInstanceOf[Array[Byte]]
-    val image = ParImage[Byte](pixels.par, ip.getWidth, ip.getHeight)
-
-    val transformedImage = TransformNeighbourhood[Byte,Byte](image, NeighbourTraverse(), Funcs.gaussBlur) transform
-
-    val result = new ByteProcessor(transformedImage.width, transformedImage.height, transformedImage.matrix.toArray)
-    new ImagePlus("grey pic", result) show()
+    val src = InteropImageJ.getByteParImage(ip)
+    val result = dermatological.other_ops.PreProcessing.gaussianBlurGreyImage (src)
+    val ijResult = InteropImageJ.makeGreyProcessor(result)
+    InteropImageJ.makeImagePlus("Blurred image", ijResult)
   }
 
 }
