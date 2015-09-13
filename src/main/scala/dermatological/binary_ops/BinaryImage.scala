@@ -2,16 +2,23 @@ package dermatological.binary_ops
 
 import core._
 
+/**
+ * Provides methods for generating a thresholded binary image from a grey image
+ */
 object BinaryImage {
 
+  /**
+   * Partially applied function; requires [[core.Image]] as input to complete
+   * @return thresholded binary image obtained using the Otsu method
+   */
   def otsuThreshold =
     OtsuTransform(_: Image[Byte]) transform
 
 
-  def greyHistogram = TransformOneChannelToHistogram(_: Image[Byte], Histo_1ChannelTraverse()) transform
+  private def greyHistogram = TransformOneChannelToHistogram(_: Image[Byte], Histo_1ChannelTraverse()) transform
 
 
-  case class MakeBinary(threshold: Int) extends PointOperation[Byte,Byte] {
+  private case class MakeBinary(threshold: Int) extends PointOperation[Byte,Byte] {
     override def runOn(pixel: Byte): Byte =
       doThreshold (pixel, threshold)
 
@@ -20,7 +27,7 @@ object BinaryImage {
   }
 
 
-  case class OtsuTransform(im: Image[Byte]) extends Transformation {
+  private case class OtsuTransform(im: Image[Byte]) extends Transformation {
 
     def transform: Image[Byte] = {
       val newMat = PointTraverse() traverse (im, MakeBinary(getThreshold))
