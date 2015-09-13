@@ -26,7 +26,7 @@ class Border_Irregularity extends PlugInFilter {
     val table = new ResultsTable
     table.incrementCounter()
     table.addValue("Border irregularity", circularityMeasure)
-    table.show("Variegation measures")
+    table.show("Border irregularity measure")
   }
 
 }
