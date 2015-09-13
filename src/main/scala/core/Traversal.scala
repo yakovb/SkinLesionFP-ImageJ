@@ -5,10 +5,21 @@ import scala.collection.parallel.immutable.ParSet
 import scala.collection.parallel.mutable.ParArray
 import scala.reflect.ClassTag
 
+/** Base trait encapsulating traversal of an [[core.Image]]'s pixel array */
 trait Traversal
 
+/**
+ * Creates a point-set mask of an [[core.Image]]'s pixels based on a predicate
+ */
 case class MaskTraverse() extends Traversal {
 
+  /**
+   * Traverses all pixels and adds their coordinates to a mask if they satisfy a predicate
+   * @param im source [[core.Image]]
+   * @param predicate the predicate used to test pixels
+   * @tparam A source pixel type
+   * @return [[scala.collection.parallel.ParSet]] of (row, column) tuples
+   */
   def traverse[A](im: Image[A], predicate: A => Boolean): ParSet[(Int,Int)] = {
     val resultArray = for {
       r <- 0 until im.height
@@ -19,11 +30,30 @@ case class MaskTraverse() extends Traversal {
   }
 }
 
+/**
+ * Creates a new [[core.Image]] by applying a function to all of its pixels
+ */
 case class PointTraverse() extends Traversal {
 
+  /**
+   * Traverses all pixels and applies a [[core.PointOperation]] to them
+   * @param im source [[core.Image]]
+   * @param pointOp [[core.PointOperation]] applied to all pixels
+   * @tparam A source pixel type
+   * @tparam B result pixel type
+   * @return a new pixel array of type [[scala.collection.parallel.mutable.ParArray]]
+   */
   def traverse[A,B](im: Image[A], pointOp: PointOperation[A,B]): ParArray[B] =
     for (pixel <- im.matrix) yield pointOp runOn pixel
 
+  /**
+   * Traverses all pixels and expands each of them into two or more pixels by applying several [[core.PointOperation]]s to each traversed pixel
+   * @param im source [[core.Image]]
+   * @param expansionOps list of [[core.PointOperation]]s to apply to each pixel
+   * @tparam A source pixel type
+   * @tparam B result pixel type
+   * @return a new pixel array of type [[scala.collection.parallel.mutable.ParArray]]
+   */
   def traverseAndExpand[A,B](im: Image[A], expansionOps: List[PointOperation[A,B]]): ParArray[B] = {
 
     def builder(element: A, ops: List[PointOperation[A,B]]): List[B] = ops match {
@@ -32,7 +62,6 @@ case class PointTraverse() extends Traversal {
     }
     (for (pixel <- im.matrix) yield builder(pixel, expansionOps)).flatten
   }
-
 }
 
 case class BlockTraverse() extends Traversal {
