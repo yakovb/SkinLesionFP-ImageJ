@@ -5,6 +5,9 @@ import ij.plugin.filter.PlugInFilter
 import ij.plugin.filter.PlugInFilter._
 import ij.process.ImageProcessor
 
+/**
+ * [[ij.plugin.filter.PlugInFilter]] that filters a grey image using the Otsu method
+ */
 class Otsu_Threshold extends PlugInFilter {
   override def setup(arg: String, imp: ImagePlus): Int =
     DOES_8G
