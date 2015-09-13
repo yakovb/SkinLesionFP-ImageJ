@@ -4,18 +4,29 @@ import core._
 
 import scala.collection.parallel.mutable.ParArray
 
+/**
+ * Provides methods for measuring the asymmetry feature descriptor of a skin lesion
+ */
 object Asymmetry {
-  
+
+  /**
+   * Partially applied function; requires [[core.Image]] as input to complete
+   * @return binary [[core.Image]] showing the asymmetrical parts of a skin lesion
+   */
   def getOverlapImage = (im: Image[Byte]) =>
     AsymmTransform(im, AsymmTraverse(), AsymmOperation()) transform
 
+  /**
+    * Partially applied function; requires [[core.Image]] as input to complete
+    * @return [[scala.Double]] of the asymmetry ratio of a skin lesion
+    */
   def calculateAsymmetry = (im: Image[Byte]) => {
     val areaWhole = Moments.getCentralMoments(im)("area")
     val areaXOR = Moments.getCentralMoments(getOverlapImage(im))("area")
     areaXOR / areaWhole
   }
   
-  case class AsymmTransform(image: Image[Byte], traversal: AsymmTraverse, op: AsymmOperation) extends Transformation {
+  private case class AsymmTransform(image: Image[Byte], traversal: AsymmTraverse, op: AsymmOperation) extends Transformation {
     
     def transform = {
       val resultArray = traversal traverse (image, Moments.getCentralMoments(image)("centroidY").round.toInt, op)
@@ -23,7 +34,7 @@ object Asymmetry {
     }
   }
 
-  case class AsymmTraverse() extends Traversal {
+  private case class AsymmTraverse() extends Traversal {
     
     def traverse(im: Image[Byte], centroidY: Int, asymmOp: AsymmOperation): ParArray[Byte] = {
       def resolveIndex(row: Int, col: Int) = im.width * row + col
@@ -43,7 +54,7 @@ object Asymmetry {
       
   }
 
-  case class AsymmOperation() extends Operation {
+  private case class AsymmOperation() extends Operation {
     def pointTest(pixelA: Byte, pixelB: Byte) =
       if (pixelA == pixelB) 255.toByte else 0.toByte
   }
