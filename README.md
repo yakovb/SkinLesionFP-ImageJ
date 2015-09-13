@@ -1,5 +1,6 @@
 # Skin Lesion FP
 MSc project: *Detecting changes in skin lesions: A functional programming approach*
+
 Supervised by Prof Steve Maybank
 
 Department of Computer Science and Information Systems, Birkbeck College, University of London, 2015
